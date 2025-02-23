@@ -1,10 +1,11 @@
-import { map } from '../../../data/map/map' 
+import { MapType } from "../../../types/map";
 
-export const initialView = () => {
-  const coordinates: string[] = map.center.split(';');
+export const initialView = (currentMap: MapType) => {
+
+  const coordinates: string[] = currentMap.center.split(';');
   const latitude: number = parseFloat(coordinates[0]);
   const longitude: number = parseFloat(coordinates[1]);
-  const zoom: number = map.zoom;
+  const zoom: number = currentMap.zoom;
 
   return {
     latitude,

@@ -1,0 +1,4 @@
+.containerMapTable {
+  display: flex;
+  flex-direction: row;
+}

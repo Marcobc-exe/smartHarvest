@@ -1,10 +1,11 @@
 import DeckGl from "@deck.gl/react";
 import Map from "react-map-gl/mapbox";
 import "mapbox-gl/dist/mapbox-gl.css";
-import { Suspense } from "react"
-import { LoaderMap } from "../LoaderMap/LoaderMap"
+import { FC, Suspense } from "react";
+import { LoaderMap } from "../LoaderMap/LoaderMap";
 import { initialView } from "./utils/initialViewfunction";
 import { MAP_STYLE, MAPBOX_TOKEN } from "../../config/configMap";
+import { MapType } from "../../types/map";
 
 const STYLE_MAP = {
   height: "calc(100vh - 180px)",
@@ -12,11 +13,15 @@ const STYLE_MAP = {
   position: "relative",
 };
 
-export const MapCanvas = () => {
+type props = {
+  currentMap: MapType;
+};
+
+export const MapCanvas: FC<props> = ({ currentMap }) => {
   return (
     <Suspense fallback={<LoaderMap />}>
       <DeckGl
-        initialViewState={initialView()}
+        initialViewState={initialView(currentMap)}
         controller={true}
         style={STYLE_MAP}
       >
@@ -30,5 +35,5 @@ export const MapCanvas = () => {
         />
       </DeckGl>
     </Suspense>
-  )
-}
+  );
+};

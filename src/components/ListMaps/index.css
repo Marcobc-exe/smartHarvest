@@ -1,0 +1,30 @@
+.listMapsItem {
+  display: flex;
+  flex-direction: column;
+  width: 220px;
+  height: calc(100vh - 80px);
+  align-items: center;
+  border-right-color: rgba(255, 255, 255, .5);
+  border-right-width: 1px;
+  border-right-style: solid;
+}
+
+.boxMapItem {
+  background-color: #34495e;
+  border: none;
+  margin: 5px 5px 5px 0;
+  border-radius: 8px;
+  height: 40px;
+  width: 200px;
+  cursor: pointer;
+}
+
+.boxMapItem:hover {
+  background-color: #2c3e50;
+}
+
+.mapName {
+  color: white;
+  font-size: 14px;
+  font-weight: bold;
+}
