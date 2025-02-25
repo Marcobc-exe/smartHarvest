@@ -15,7 +15,7 @@ export const MapTable = () => {
   const onClickmap = (mapData: MapType) => {
     setCurrentMap(mapData);
   };
-  
+
   // const map = [
   //   {
   //     id: "0",
@@ -36,7 +36,7 @@ export const MapTable = () => {
   return (
     <div className="containerMapTable">
       {listOfMaps.length ? (
-        <ListMaps listOfMaps={listOfMaps} onClickmap={onClickmap} />
+        <ListMaps listOfMaps={listOfMaps} currentMap={currentMap} onClickmap={onClickmap} />
       ) : (
         <h2>No maps...</h2>
       )}
