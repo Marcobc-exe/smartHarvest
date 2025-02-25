@@ -8,9 +8,11 @@ import { MAP_STYLE, MAPBOX_TOKEN } from "../../config/configMap";
 import { MapType } from "../../types/map";
 
 const STYLE_MAP = {
-  height: "calc(100vh - 180px)",
-  width: "100%",
+  height: "calc(100vh - 160px)",
+  width: "85%",
   position: "relative",
+  transform: "translateX(2.5%)",
+  alignSelf: "center"
 };
 
 type props = {
