@@ -10,10 +10,12 @@ export const MapTable = () => {
   const [listOfMaps, setListOfMaps]: useStateProp<MapType[]> = useState(
     storedMaps || []
   );
+  const [currentMap, setCurrentMap]: useStateProp<MapType> = useState(storedMaps[0] || []);
 
   const onClickmap = (mapData: MapType) => {
-    console.log(mapData);
+    setCurrentMap(mapData);
   };
+  
   // const map = [
   //   {
   //     id: "0",
@@ -38,7 +40,7 @@ export const MapTable = () => {
       ) : (
         <h2>No maps...</h2>
       )}
-      {listOfMaps.length ? <MapCanvas currentMap={listOfMaps[0]} /> : null}
+      {listOfMaps.length ? <MapCanvas currentMap={currentMap} /> : null}
     </div>
   );
 };
