@@ -17,16 +17,19 @@ import { initialView } from "../../../utils/initialViewfunction";
 import { FormNewMap } from "../../../components/Forms/FormNewMap/FormNewMap";
 import { useForm } from "react-hook-form";
 import Pin from "../../../components/Pin/Pin";
+import { FormEditMap } from "../../../components/Forms/FormEditMap/FormEditMap";
 
 export const HomeMapPage = () => {
   const listOfMaps = JSON.parse(localStorage.getItem("maps") ?? "[]");
-  const { control, handleSubmit, resetField } = useForm<InputMap>({
+  const { control, handleSubmit, resetField, setValue } = useForm<InputMap>({
     defaultValues: { name: "" },
   });
   const [coords, setCoords]: useStateProp<number[] | []> = useState([]);
   const [errorCoords, setErrorCoords]: useStateProp<boolean> = useState(false);
   const [mapBody, setMapBody]: useStateProp<MapType> = useState(defaultMap);
   const [displayForm, setDisplayForm]: useStateProp<boolean> = useState(false);
+  const [displayEditForm, setDisplayEditForm]: useStateProp<boolean> =
+    useState(false);
   const [currentMap, setCurrentMap]: useStateProp<MapType> = useState(
     listOfMaps[0]
   );
@@ -40,6 +43,7 @@ export const HomeMapPage = () => {
 
   const handleAddMap = () => {
     if (!displayForm) setDisplayForm(true);
+    setCurrentMap(defaultMap);
   };
 
   const handleCenterPoint = (data: dataNewMap) => {
@@ -79,25 +83,72 @@ export const HomeMapPage = () => {
     setDisplayForm(false);
     setCoords([]);
     setErrorCoords(false);
-  }
+    setCurrentMap(listOfMaps[0])
+  };
+
+  const handleEditMap = (map: MapType) => {
+    if (map.id != currentMap.id || !displayEditForm) {
+      const center = map.center
+        .split(";")
+        .map((coord) => parseFloat(coord))
+        .reverse();
+  
+      setDisplayEditForm(true);
+      setCoords(center);
+      setCurrentMap(map);
+      setValue("name", map.name);
+    }
+  };
+
+  const handleSaveMap = (value: { name: string }) => {
+    const listFarms: MapType[] = JSON.parse(localStorage.getItem("maps") ?? "[]");
+    const editFarm = {
+      ...currentMap,
+      name: value.name,
+      center: `${coords[1]}; ${coords[0]}`,
+      zoom: currentMap.zoom,
+    };
+    const newListFarm = listFarms.map(farm => {
+      if (farm.id == editFarm.id){
+        return editFarm
+      } else {
+        return farm
+      }
+    });
+
+    localStorage.setItem("maps", JSON.stringify(newListFarm));
+    setCurrentMap(editFarm);
+    setDisplayEditForm(false);
+    setCoords([]);
+    setErrorCoords(false);
+  };
+
+  const handleCancelEditMap = () => {
+    resetField("name");
+    setDisplayEditForm(false);
+    setCoords([]);
+    setErrorCoords(false);
+  };
 
   return (
     <>
       <h2>Smart Harvest</h2>
       <div className="container">
         <ListMaps
+          displayEditForm={displayEditForm}
           displayForm={displayForm}
           listOfMaps={listOfMaps}
           currentMap={currentMap}
           onClickmap={onClickmap}
           handleAddMap={handleAddMap}
+          handleEditMap={handleEditMap}
         />
         <DeckGl
           initialViewState={initialView(currentMap)}
           controller={true}
-          style={displayForm ? STYLE_ADD_MAP : STYLE_MAP}
+          style={displayForm || displayEditForm ? STYLE_ADD_MAP : STYLE_MAP}
           onClick={(data) => {
-            if (displayForm) {
+            if (displayForm || displayEditForm) {
               handleCenterPoint({
                 coords: data.coordinate,
                 zoom: data.viewport?.zoom,
@@ -132,6 +183,15 @@ export const HomeMapPage = () => {
             handleCreateMap={handleCreateMap}
             handleSubmit={handleSubmit}
             handleCancelCreateMap={handleCancelCreateMap}
+          />
+        )}
+        {displayEditForm && (
+          <FormEditMap
+            control={control}
+            errorCoords={errorCoords}
+            handleSaveMap={handleSaveMap}
+            handleSubmit={handleSubmit}
+            handleCancelEditMap={handleCancelEditMap}
           />
         )}
       </div>
