@@ -12,6 +12,7 @@ type props<T extends FieldValues> = {
   errorCoords: boolean;
   handleCreateMap: (value: T) => void;
   handleSubmit: UseFormHandleSubmit<T>;
+  handleCancelCreateMap: () => void;
 };
 
 export const FormNewMap: FC<props<{ name: string }>> = ({
@@ -19,6 +20,7 @@ export const FormNewMap: FC<props<{ name: string }>> = ({
   errorCoords,
   handleCreateMap,
   handleSubmit,
+  handleCancelCreateMap,
 }) => {
   return (
     <form className="formMap" onSubmit={handleSubmit(handleCreateMap)}>
@@ -49,7 +51,7 @@ export const FormNewMap: FC<props<{ name: string }>> = ({
       <button type="submit" className="btnCreateMap">
         Create
       </button>
-      <button type="submit" className="btnCancellMap">
+      <button className="btnCancellMap" onClick={() => handleCancelCreateMap()}>
         Cancel
       </button>
       {errorCoords && (

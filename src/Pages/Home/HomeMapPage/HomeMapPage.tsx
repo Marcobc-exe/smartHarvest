@@ -20,7 +20,7 @@ import Pin from "../../../components/Pin/Pin";
 
 export const HomeMapPage = () => {
   const listOfMaps = JSON.parse(localStorage.getItem("maps") ?? "[]");
-  const { control, handleSubmit } = useForm<InputMap>({
+  const { control, handleSubmit, resetField } = useForm<InputMap>({
     defaultValues: { name: "" },
   });
   const [coords, setCoords]: useStateProp<number[] | []> = useState([]);
@@ -74,6 +74,13 @@ export const HomeMapPage = () => {
     }
   };
 
+  const handleCancelCreateMap = () => {
+    resetField("name");
+    setDisplayForm(false);
+    setCoords([]);
+    setErrorCoords(false);
+  }
+
   return (
     <>
       <h2>Smart Harvest</h2>
@@ -124,6 +131,7 @@ export const HomeMapPage = () => {
             errorCoords={errorCoords}
             handleCreateMap={handleCreateMap}
             handleSubmit={handleSubmit}
+            handleCancelCreateMap={handleCancelCreateMap}
           />
         )}
       </div>
