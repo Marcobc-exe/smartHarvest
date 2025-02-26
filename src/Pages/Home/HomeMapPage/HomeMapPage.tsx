@@ -1,5 +1,5 @@
 import DeckGl from "@deck.gl/react";
-import { Map, NavigationControl, Marker } from "react-map-gl/mapbox";
+import { Map, NavigationControl } from "react-map-gl/mapbox";
 import "mapbox-gl/dist/mapbox-gl.css";
 import "./index.css";
 import { ListMaps } from "../../../components/ListMaps/ListMaps";
@@ -16,8 +16,8 @@ import {
 import { initialView } from "../../../utils/initialViewfunction";
 import { FormNewMap } from "../../../components/Forms/FormNewMap/FormNewMap";
 import { useForm } from "react-hook-form";
-import Pin from "../../../components/Pin/Pin";
 import { FormEditMap } from "../../../components/Forms/FormEditMap/FormEditMap";
+import { MarkerCreateMap } from "../../../components/Markers/MarkerCreateMap/MarkerCreateMap";
 
 export const HomeMapPage = () => {
   const listOfMaps = JSON.parse(localStorage.getItem("maps") ?? "[]");
@@ -26,7 +26,6 @@ export const HomeMapPage = () => {
   });
   const [coords, setCoords]: useStateProp<number[] | []> = useState([]);
   const [errorCoords, setErrorCoords]: useStateProp<boolean> = useState(false);
-  const [mapBody, setMapBody]: useStateProp<MapType> = useState(defaultMap);
   const [displayForm, setDisplayForm]: useStateProp<boolean> = useState(false);
   const [displayEditForm, setDisplayEditForm]: useStateProp<boolean> =
     useState(false);
@@ -48,9 +47,9 @@ export const HomeMapPage = () => {
 
   const handleCenterPoint = (data: dataNewMap) => {
     setCoords(data.coords);
-    setMapBody((preValues: MapType) => ({
+    setCurrentMap((preValues: MapType) => ({
       ...preValues,
-      center: data.coords,
+      center: `${data.coords[1]}; ${data.coords[0]}`,
       zoom: data.zoom,
     }));
   };
@@ -62,9 +61,9 @@ export const HomeMapPage = () => {
         id: listFarms.length + 1,
         name: value.name,
         center: `${coords[1]}; ${coords[0]}`,
-        zoom: Number.parseInt(mapBody.zoom.toString()),
-        minZoom: mapBody.minZoom,
-        maxZoom: mapBody.maxZoom,
+        zoom: currentMap.zoom,
+        minZoom: 1,
+        maxZoom: 20,
       };
       const list = JSON.stringify([...listFarms, newFarm]);
       localStorage.setItem("maps", list);
@@ -164,36 +163,26 @@ export const HomeMapPage = () => {
             doubleClickZoom={false}
             dragPan={false}
           >
-            {coords.length && (
-              <Marker
-                longitude={coords[0]}
-                latitude={coords[1]}
-                anchor="bottom"
-              >
-                <Pin size={20} />
-              </Marker>
-            )}
+            <MarkerCreateMap coords={coords} />
             <NavigationControl />
           </Map>
         </DeckGl>
-        {displayForm && (
-          <FormNewMap
-            control={control}
-            errorCoords={errorCoords}
-            handleCreateMap={handleCreateMap}
-            handleSubmit={handleSubmit}
-            handleCancelCreateMap={handleCancelCreateMap}
-          />
-        )}
-        {displayEditForm && (
-          <FormEditMap
-            control={control}
-            errorCoords={errorCoords}
-            handleSaveMap={handleSaveMap}
-            handleSubmit={handleSubmit}
-            handleCancelEditMap={handleCancelEditMap}
-          />
-        )}
+        <FormNewMap
+          displayForm={displayForm}
+          control={control}
+          errorCoords={errorCoords}
+          handleCreateMap={handleCreateMap}
+          handleSubmit={handleSubmit}
+          handleCancelCreateMap={handleCancelCreateMap}
+        />
+        <FormEditMap
+          displayEditForm={displayEditForm}
+          control={control}
+          errorCoords={errorCoords}
+          handleSaveMap={handleSaveMap}
+          handleSubmit={handleSubmit}
+          handleCancelEditMap={handleCancelEditMap}
+        />
       </div>
     </>
   );
