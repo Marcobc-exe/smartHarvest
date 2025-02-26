@@ -7,6 +7,7 @@ export const STYLE_MAP = {
   height: "calc(100vh - 160px)",
   width: "70%",
   position: "relative",
+  marginLeft: "24px",
 };
 
 export const STYLE_NEW_MAP = {
@@ -19,6 +20,7 @@ export const STYLE_ADD_MAP = {
   height: "calc(100vh - 160px)",
   width: "55%",
   position: "relative",
+  marginLeft: "24px",
 };
 
 export const defaultMap = {
