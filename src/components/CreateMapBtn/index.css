@@ -1,0 +1,41 @@
+.containerBtnNewMap {
+  width: 100%;
+  height: calc(100vh - 80px);
+}
+
+.btnNewMap {
+  position: relative;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -90%);
+  border: none;
+  background-color: transparent;
+  color: white;
+  display: flex;
+  flex-direction: column;
+  cursor: pointer;
+  align-items: center;
+}
+
+.boxPlus {
+  border: 2px solid white;
+  border-radius: 50px;
+  margin-bottom: 18px;
+  width: 90px;
+  height: 90px;
+}
+
+.boxPlus:hover {
+  background-color: rgb(43, 44, 44);
+  font-weight: bold;
+  transition: .01s all ease-in-out;
+}
+
+.plus{
+  margin: 0;
+  font-size: 80px;
+}
+
+.newMap {
+  font-size: 18px;
+}

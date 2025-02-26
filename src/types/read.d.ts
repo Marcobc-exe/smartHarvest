@@ -16,5 +16,12 @@ type useStateProp<S> = [S, setStateAction];
 
 type EventSelectType = ChangeEvent<HTMLSelectElement>;
 type EventInputType = FormEvent<HTMLInputElement>;
+type EventFormEventType = FormEvent<HTMLFormElement>;
 
-export { setStateAction, useStateProp, EventSelectType, EventInputType };
+export {
+  setStateAction,
+  useStateProp,
+  EventSelectType,
+  EventInputType,
+  EventFormEventType,
+};

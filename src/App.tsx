@@ -1,43 +1,6 @@
-// import { useRef  } from 'react'
+import { HashRouter } from "react-router-dom";
 import './App.css'
-import { MapTable } from './components/MapTable/MapTable';
-
-// const Input = ({ items, setItems }) => {
-//   const inputRef = useRef(null)
-  
-//   const handleSubmit = (evt) => {
-//     if (!inputRef.current.value.length) return;
-//     evt.preventDefault();
-
-//     setItems([...items, inputRef.current.value])
-//     inputRef.current.value = ''
-//   }
-  
-//   const handleDelete = (itemToDelete) => {
-//     setItems(() => items.filter((item) => item !== itemToDelete))
-//   }
-  
-//   return(
-//     <div>
-//       <form onSubmit={(evt) => {handleSubmit(evt)}}>
-//           <input
-//             type='text'
-//             placeholder='item'
-//             ref={inputRef}
-//           />
-//           <button>add item</button>
-//       </form>
-
-//       <div className="item-list-container">
-//           {items.length > 0 && items.map((item)=> (
-//             <div className="item" key={item}>{item}
-//               <button onClick={(evt) => {handleDelete(item)}}>X</button>
-//             </div>
-//           ))}
-//       </div>
-//     </div>
-//   )  
-// }
+import { AppRouter } from "./routes/AppRouter";
 
 const App = () => {
   const listOfMaps = [
@@ -54,13 +17,13 @@ const App = () => {
       zoom: 14,
     }
   ];
+
+  // localStorage.setItem("maps", JSON.stringify(listOfMaps))
     
   return (
-    <>
-      <h2>Smart Harvest</h2>
-      <MapTable />
-      {/* <Input items={items} setItems={setItems} /> */}
-    </>
+    <HashRouter>
+      <AppRouter />
+    </HashRouter>
   )
 }
 

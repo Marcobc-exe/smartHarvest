@@ -17,8 +17,9 @@ export const ListMaps: FC<props> = ({ listOfMaps, currentMap, onClickmap }) => {
           className="boxMapItem"
           onClick={() => onClickmap(map)}
           style={{
-            border: currentMap.id == map.id ? "solid 1px rgb(173, 144, 39)" : "none",
-            fontWeight: currentMap.id == map.id ? "bold" : "normal"
+            fontWeight: currentMap.id == map.id ? "bold" : "normal",
+            border:
+              currentMap.id == map.id ? "solid 1px rgb(173, 144, 39)" : "none",
           }}
         >
           <span className="mapName">{map.name}</span>
