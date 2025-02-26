@@ -21,3 +21,7 @@ export type StyleMap = {
   transform: string;
   alignSelf: string
 }
+
+export type InputMap = {
+  name: string;
+};

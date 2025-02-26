@@ -2,12 +2,15 @@
   display: flex;
   flex-direction: column;
   width: 220px;
-  height: calc(100vh - 80px);
+  /* height: calc(100vh - 80px); */
   align-items: center;
   border-right: 1px solid rgba(255, 255, 255, .5);
+  /* background: white; */
+  position: absolute;
+  left: 14px;
 }
 
-.boxMapItem {
+.boxMapItem, .btnEnabled, .btnDisabled {
   background-color: #34495e;
   border: none;
   margin: 5px 5px 5px 0;
@@ -15,6 +18,23 @@
   height: 40px;
   width: 200px;
   cursor: pointer;
+}
+
+.btnEnabled, .btnDisabled {
+  color: white;
+  font-size: 28px;
+  border: 1px solid white;
+  opacity: .5;
+}
+
+.btnDisabled {
+  opacity: .3;
+  cursor: default;
+}
+
+.btnEnabled:hover {
+  opacity: 1;
+  transition: .04s all ease-in-out;
 }
 
 .boxMapItem:hover {

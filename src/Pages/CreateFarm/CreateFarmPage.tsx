@@ -5,26 +5,13 @@ import "./index.css";
 import { Suspense, useState } from "react";
 import { LoaderMap } from "../../components/LoaderMap/LoaderMap";
 import { initialView } from "../../utils/initialViewfunction";
-import { MAP_STYLE, MAPBOX_TOKEN, STYLE_NEW_MAP } from "../../config/configMap";
-import { dataNewMap, MapType } from "../../types/map";
+import { defaultMap, MAP_STYLE, MAPBOX_TOKEN, STYLE_NEW_MAP } from "../../config/configMap";
+import { dataNewMap, InputMap, MapType } from "../../types/map";
 import { useStateProp } from "../../types/read";
 import Pin from "../../components/Pin/Pin";
 import { FormNewMap } from "../../components/Forms/FormNewMap/FormNewMap";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
-
-type InputMap = {
-  name: string;
-};
-
-const map = {
-  id: "-1",
-  name: "Default",
-  center: "0; 0",
-  zoom: 1.5,
-  minZoom: 1,
-  maxZoom: 20,
-};
 
 export const CreateFarmPage = () => {
   const navigate = useNavigate();
@@ -33,7 +20,7 @@ export const CreateFarmPage = () => {
   });
   const [coords, setCoords]: useStateProp<number[] | []> = useState([]);
   const [errorCoords, setErrorCoords]: useStateProp<boolean> = useState(false);
-  const [mapBody, setMapBody]: useStateProp<MapType> = useState(map);
+  const [mapBody, setMapBody]: useStateProp<MapType> = useState(defaultMap);
 
   const handleCenterPoint = (data: dataNewMap) => {
     setCoords(data.coords);
@@ -70,7 +57,7 @@ export const CreateFarmPage = () => {
       <h2 className="title">Create map</h2>
       <div className="container">
         <DeckGl
-          initialViewState={initialView(map)}
+          initialViewState={initialView(defaultMap)}
           controller={true}
           style={STYLE_NEW_MAP}
           onClick={(data) => {
@@ -83,8 +70,8 @@ export const CreateFarmPage = () => {
           <Map
             mapStyle={MAP_STYLE}
             mapboxAccessToken={MAPBOX_TOKEN}
-            minZoom={map.minZoom}
-            maxZoom={map.maxZoom}
+            minZoom={defaultMap.minZoom}
+            maxZoom={defaultMap.maxZoom}
             doubleClickZoom={false}
             dragPan={false}
           >

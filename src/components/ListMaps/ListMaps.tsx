@@ -3,14 +3,29 @@ import { MapType } from "../../types/map";
 import "./index.css";
 
 type props = {
+  displayForm: boolean;
   listOfMaps: MapType[];
   currentMap: MapType;
   onClickmap: (mapData: MapType) => void;
+  handleAddMap: () => void;
 };
 
-export const ListMaps: FC<props> = ({ listOfMaps, currentMap, onClickmap }) => {
+export const ListMaps: FC<props> = ({
+  displayForm,
+  listOfMaps,
+  currentMap,
+  onClickmap,
+  handleAddMap,
+}) => {
   return (
     <div className="listMapsItem">
+      <button
+        className={!displayForm ? "btnEnabled" : "btnDisabled"}
+        onClick={() => handleAddMap()}
+        disabled={displayForm}
+      >
+        +
+      </button>
       {listOfMaps.map((map: MapType) => (
         <button
           key={map.id}
