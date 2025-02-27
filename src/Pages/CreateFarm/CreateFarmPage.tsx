@@ -21,6 +21,7 @@ export const CreateFarmPage = () => {
   const [coords, setCoords]: useStateProp<number[] | []> = useState([]);
   const [errorCoords, setErrorCoords]: useStateProp<boolean> = useState(false);
   const [mapBody, setMapBody]: useStateProp<MapType> = useState(defaultMap);
+  const [displayForm, setDisplayForm]: useStateProp<boolean> = useState(true)
 
   const handleCenterPoint = (data: dataNewMap) => {
     setCoords(data.coords);
@@ -52,6 +53,10 @@ export const CreateFarmPage = () => {
     }
   };
 
+  const handleCancelCreateMap = () => {
+    navigate("/")
+  }
+
   return (
     <Suspense fallback={<LoaderMap />}>
       <h2 className="title">Create map</h2>
@@ -80,10 +85,12 @@ export const CreateFarmPage = () => {
           </Map>
         </DeckGl>
         <FormNewMap
+          displayForm={displayForm}
           control={control}
           errorCoords={errorCoords}
           handleCreateMap={handleCreateMap}
           handleSubmit={handleSubmit}
+          handleCancelCreateMap={handleCancelCreateMap}
         />
       </div>
     </Suspense>

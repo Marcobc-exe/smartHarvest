@@ -8,12 +8,12 @@ import {
 } from "react-hook-form";
 
 type props<T extends FieldValues> = {
-  displayForm?: boolean;
+  displayForm: boolean;
   control: Control<T>;
   errorCoords: boolean;
   handleCreateMap: (value: T) => void;
   handleSubmit: UseFormHandleSubmit<T>;
-  handleCancelCreateMap?: () => void;
+  handleCancelCreateMap: () => void;
 };
 
 export const FormNewMap: FC<props<{ name: string }>> = ({

@@ -14,6 +14,7 @@ type props<T extends FieldValues> = {
   handleSaveMap: (value: T) => void;
   handleSubmit: UseFormHandleSubmit<T>;
   handleCancelEditMap: () => void;
+  handleDeleteMap: () => void;
 };
 
 export const FormEditMap: FC<props<{ name: string }>> = ({
@@ -23,6 +24,7 @@ export const FormEditMap: FC<props<{ name: string }>> = ({
   handleSaveMap,
   handleSubmit,
   handleCancelEditMap,
+  handleDeleteMap,
 }) => {
   return (
     <>
@@ -55,8 +57,11 @@ export const FormEditMap: FC<props<{ name: string }>> = ({
           <button type="submit" className="btnCreateMap">
             Save
           </button>
-          <button className="btnCancellMap" onClick={() => handleCancelEditMap()}>
+          <button className="btnCancelMap" onClick={() => handleCancelEditMap()}>
             Cancel
+          </button>
+          <button className="btnDeleteMap" onClick={() => handleDeleteMap()}>
+            Delete
           </button>
           {errorCoords && (
             <span style={{ color: "white" }}>Coordinates required</span>

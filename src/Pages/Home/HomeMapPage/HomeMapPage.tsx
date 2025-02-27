@@ -18,9 +18,11 @@ import { ContainerListMaps } from "../../../components/ListMaps/ContainerListMap
 import { FormNewMap } from "../../../components/Forms/FormNewMap/FormNewMap";
 import { FormEditMap } from "../../../components/Forms/FormEditMap/FormEditMap";
 import { MarkerCreateMap } from "../../../components/Markers/MarkerCreateMap/MarkerCreateMap";
+import { useNavigate } from "react-router-dom";
 
 export const HomeMapPage = () => {
-  const listOfMaps = JSON.parse(localStorage.getItem("maps") ?? "[]");
+  const navigate = useNavigate()
+  const listOfMaps: MapType[] | [] = JSON.parse(localStorage.getItem("maps") ?? "[]");
   const { control, handleSubmit, resetField, setValue } = useForm<InputMap>({
     defaultValues: { name: "" },
   });
@@ -43,6 +45,7 @@ export const HomeMapPage = () => {
   const handleAddMap = () => {
     if (!displayForm) setDisplayForm(true);
     setCurrentMap(defaultMap);
+    resetField("name")
   };
 
   const handleCenterPoint = (data: dataNewMap) => {
@@ -123,11 +126,23 @@ export const HomeMapPage = () => {
   };
 
   const handleCancelEditMap = () => {
-    resetField("name");
     setDisplayEditForm(false);
     setCoords([]);
     setErrorCoords(false);
   };
+
+  const handleDeleteMap = () => {
+    const maps: MapType[]= JSON.parse(localStorage.getItem("maps") ?? "[]");
+    const updatedMaps = maps.filter(map => map.id !== currentMap.id);
+
+    localStorage.setItem("maps", JSON.stringify(updatedMaps));
+    
+    if (updatedMaps.length > 0) {
+      setCurrentMap(updatedMaps[0]);
+    } else {
+      navigate("/")
+    }
+  }
 
   return (
     <>
@@ -182,6 +197,7 @@ export const HomeMapPage = () => {
           handleSaveMap={handleSaveMap}
           handleSubmit={handleSubmit}
           handleCancelEditMap={handleCancelEditMap}
+          handleDeleteMap={handleDeleteMap}
         />
       </div>
     </>
