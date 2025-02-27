@@ -1,10 +1,10 @@
+import "./index.css";
 import DeckGl from "@deck.gl/react";
 import { Map, NavigationControl } from "react-map-gl/mapbox";
 import "mapbox-gl/dist/mapbox-gl.css";
-import "./index.css";
-import { ListMaps } from "../../../components/ListMaps/ListMaps";
-import { dataNewMap, InputMap, MapType } from "../../../types/map";
+import { useForm } from "react-hook-form";
 import { useState } from "react";
+import { dataNewMap, InputMap, MapType } from "../../../types/map";
 import { useStateProp } from "../../../types/read";
 import {
   defaultMap,
@@ -14,8 +14,8 @@ import {
   STYLE_MAP,
 } from "../../../config/configMap";
 import { initialView } from "../../../utils/initialViewfunction";
+import { ContainerListMaps } from "../../../components/ListMaps/ContainerListMaps";
 import { FormNewMap } from "../../../components/Forms/FormNewMap/FormNewMap";
-import { useForm } from "react-hook-form";
 import { FormEditMap } from "../../../components/Forms/FormEditMap/FormEditMap";
 import { MarkerCreateMap } from "../../../components/Markers/MarkerCreateMap/MarkerCreateMap";
 
@@ -133,7 +133,7 @@ export const HomeMapPage = () => {
     <>
       <h2>Smart Harvest</h2>
       <div className="container">
-        <ListMaps
+        <ContainerListMaps
           displayEditForm={displayEditForm}
           displayForm={displayForm}
           listOfMaps={listOfMaps}
