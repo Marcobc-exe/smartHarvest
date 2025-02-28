@@ -21,8 +21,7 @@ export const CreateFarmPage = () => {
   const [coords, setCoords]: useStateProp<number[] | []> = useState([]);
   const [errorCoords, setErrorCoords]: useStateProp<boolean> = useState(false);
   const [mapBody, setMapBody]: useStateProp<MapType> = useState(defaultMap);
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const [displayForm, setDisplayForm]: useStateProp<boolean> = useState(true);
+  const [displayForm]: useStateProp<boolean> = useState(true);
 
   const handleCenterPoint = (data: dataNewMap) => {
     setCoords(data.coords);
