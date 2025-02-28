@@ -1,8 +1,7 @@
-import DeckGl from "@deck.gl/react";
-import { Map, NavigationControl } from "react-map-gl/mapbox";
 import "mapbox-gl/dist/mapbox-gl.css";
 import "./index.css";
-import { Suspense, useState } from "react";
+import { lazy, Suspense, useState } from "react";
+import { Map, NavigationControl } from "react-map-gl/mapbox";
 import { LoaderMap } from "../../components/LoaderMap/LoaderMap";
 import { initialView } from "../../utils/initialViewfunction";
 import { defaultMap, MAP_STYLE, MAPBOX_TOKEN, STYLE_NEW_MAP } from "../../config/configMap";
@@ -12,6 +11,8 @@ import { FormNewMap } from "../../components/Forms/FormNewMap/FormNewMap";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import { MarkerCreateMap } from "../../components/Markers/MarkerCreateMap/MarkerCreateMap";
+
+const DeckGl = lazy(() => import("deck.gl"));
 
 export const CreateFarmPage = () => {
   const navigate = useNavigate();

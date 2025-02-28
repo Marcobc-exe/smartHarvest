@@ -1,9 +1,8 @@
 import "./index.css";
-import DeckGl from "@deck.gl/react";
+import { lazy, Suspense, useState } from "react";
 import { Map, NavigationControl } from "react-map-gl/mapbox";
 import "mapbox-gl/dist/mapbox-gl.css";
 import { useForm } from "react-hook-form";
-import { useState } from "react";
 import { dataNewMap, InputMap, MapType } from "../../../types/map";
 import { useStateProp } from "../../../types/read";
 import {
@@ -20,10 +19,15 @@ import { FormEditMap } from "../../../components/Forms/FormEditMap/FormEditMap";
 import { MarkerCreateMap } from "../../../components/Markers/MarkerCreateMap/MarkerCreateMap";
 import { useNavigate } from "react-router-dom";
 import { handleCursor } from "../../../utils/handleCursor";
+import { LoaderMap } from "../../../components/LoaderMap/LoaderMap";
+
+const DeckGl = lazy(() => import("deck.gl"));
 
 export const HomeMapPage = () => {
-  const navigate = useNavigate()
-  const listOfMaps: MapType[] | [] = JSON.parse(localStorage.getItem("maps") ?? "[]");
+  const navigate = useNavigate();
+  const listOfMaps: MapType[] | [] = JSON.parse(
+    localStorage.getItem("maps") ?? "[]"
+  );
   const { control, handleSubmit, resetField, setValue } = useForm<InputMap>({
     defaultValues: { name: "" },
   });
@@ -46,7 +50,7 @@ export const HomeMapPage = () => {
   const handleAddMap = () => {
     if (!displayForm) setDisplayForm(true);
     setCurrentMap(defaultMap);
-    resetField("name")
+    resetField("name");
   };
 
   const handleCenterPoint = (data: dataNewMap) => {
@@ -86,7 +90,7 @@ export const HomeMapPage = () => {
     setDisplayForm(false);
     setCoords([]);
     setErrorCoords(false);
-    setCurrentMap(listOfMaps[0])
+    setCurrentMap(listOfMaps[0]);
   };
 
   const handleEditMap = (map: MapType) => {
@@ -95,7 +99,7 @@ export const HomeMapPage = () => {
         .split(";")
         .map((coord) => parseFloat(coord))
         .reverse();
-  
+
       setDisplayEditForm(true);
       setCoords(center);
       setCurrentMap(map);
@@ -104,18 +108,20 @@ export const HomeMapPage = () => {
   };
 
   const handleSaveMap = (value: { name: string }) => {
-    const listFarms: MapType[] = JSON.parse(localStorage.getItem("maps") ?? "[]");
+    const listFarms: MapType[] = JSON.parse(
+      localStorage.getItem("maps") ?? "[]"
+    );
     const editFarm = {
       ...currentMap,
       name: value.name,
       center: `${coords[1]}; ${coords[0]}`,
       zoom: currentMap.zoom,
     };
-    const newListFarm = listFarms.map(farm => {
-      if (farm.id == editFarm.id){
-        return editFarm
+    const newListFarm = listFarms.map((farm) => {
+      if (farm.id == editFarm.id) {
+        return editFarm;
       } else {
-        return farm
+        return farm;
       }
     });
 
@@ -133,20 +139,20 @@ export const HomeMapPage = () => {
   };
 
   const handleDeleteMap = () => {
-    const maps: MapType[]= JSON.parse(localStorage.getItem("maps") ?? "[]");
-    const updatedMaps = maps.filter(map => map.id !== currentMap.id);
+    const maps: MapType[] = JSON.parse(localStorage.getItem("maps") ?? "[]");
+    const updatedMaps = maps.filter((map) => map.id !== currentMap.id);
 
     localStorage.setItem("maps", JSON.stringify(updatedMaps));
-    
+
     if (updatedMaps.length > 0) {
       setCurrentMap(updatedMaps[0]);
     } else {
-      navigate("/")
+      navigate("/");
     }
-  }
+  };
 
   return (
-    <>
+    <Suspense fallback={<LoaderMap />}>
       <h2>Smart Harvest</h2>
       <div className="container">
         <ContainerListMaps
@@ -165,7 +171,7 @@ export const HomeMapPage = () => {
           onClick={(data) => {
             if (displayForm || displayEditForm) {
               handleCenterPoint({
-                coords: (data.coordinate as [number, number] ?? [0, 0]),
+                coords: (data.coordinate as [number, number]) ?? [0, 0],
                 zoom: data.viewport?.zoom ?? 1,
               });
             }
@@ -202,6 +208,6 @@ export const HomeMapPage = () => {
           handleDeleteMap={handleDeleteMap}
         />
       </div>
-    </>
+    </Suspense>
   );
 };
