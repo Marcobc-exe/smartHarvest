@@ -165,8 +165,8 @@ export const HomeMapPage = () => {
           onClick={(data) => {
             if (displayForm || displayEditForm) {
               handleCenterPoint({
-                coords: data.coordinate,
-                zoom: data.viewport?.zoom,
+                coords: (data.coordinate as [number, number] ?? [0, 0]),
+                zoom: data.viewport?.zoom ?? 1,
               });
             }
           }}
