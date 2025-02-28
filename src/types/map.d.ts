@@ -25,3 +25,8 @@ export type StyleMap = {
 export type InputMap = {
   name: string;
 };
+
+export type CursorType = {
+  isHovering: boolean;
+  isDragging: boolean;
+}

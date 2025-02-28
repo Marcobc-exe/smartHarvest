@@ -19,6 +19,7 @@ import { FormNewMap } from "../../../components/Forms/FormNewMap/FormNewMap";
 import { FormEditMap } from "../../../components/Forms/FormEditMap/FormEditMap";
 import { MarkerCreateMap } from "../../../components/Markers/MarkerCreateMap/MarkerCreateMap";
 import { useNavigate } from "react-router-dom";
+import { handleCursor } from "../../../utils/handleCursor";
 
 export const HomeMapPage = () => {
   const navigate = useNavigate()
@@ -169,6 +170,7 @@ export const HomeMapPage = () => {
               });
             }
           }}
+          getCursor={(event) => handleCursor(event)}
         >
           <Map
             mapStyle={MAP_STYLE}
