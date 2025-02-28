@@ -1,13 +1,12 @@
-import './App.css'
-import { MapCanvas } from './components/Map/MapCanvas'
+import { HashRouter } from "react-router-dom";
+import { AppRouter } from "./routes/AppRouter";
 
 const App = () => {
   return (
-    <>
-      <h2>Smart Harvest</h2>
-      <MapCanvas />
-    </>
-  )
-}
+    <HashRouter>
+      <AppRouter />
+    </HashRouter>
+  );
+};
 
-export default App
+export default App;
