@@ -1,9 +1,13 @@
 import "./index.css";
-import { lazy, Suspense, useState } from "react";
+import { Suspense, useState } from "react";
 import { Map, NavigationControl } from "react-map-gl/mapbox";
 import "mapbox-gl/dist/mapbox-gl.css";
+import DeckGl from "deck.gl";
+import {PolygonLayer} from "@deck.gl/layers"
+// import { DrawLineStringMode, EditingMode, Editor } from "react-map-gl-draw";
+
 import { useForm } from "react-hook-form";
-import { dataNewMap, InputMap, MapType } from "../../../types/map";
+import { Coords, dataNewMap, InputMap, MapType } from "../../../types/map";
 import { useStateProp } from "../../../types/read";
 import {
   defaultMap,
@@ -13,15 +17,13 @@ import {
   STYLE_MAP,
 } from "../../../config/configMap";
 import { initialView } from "../../../utils/initialViewfunction";
-import { ContainerListMaps } from "../../../components/ListMaps/ContainerListMaps";
 import { FormNewMap } from "../../../components/Forms/FormNewMap/FormNewMap";
 import { FormEditMap } from "../../../components/Forms/FormEditMap/FormEditMap";
 import { MarkerCreateMap } from "../../../components/Markers/MarkerCreateMap/MarkerCreateMap";
 import { useNavigate } from "react-router-dom";
 import { handleCursor } from "../../../utils/handleCursor";
 import { LoaderMap } from "../../../components/LoaderMap/LoaderMap";
-
-const DeckGl = lazy(() => import("deck.gl"));
+import { ContainerListMaps } from "../../../components/ListMaps/ContainerListMaps";
 
 export const HomeMapPage = () => {
   const navigate = useNavigate();
@@ -39,6 +41,9 @@ export const HomeMapPage = () => {
   const [currentMap, setCurrentMap]: useStateProp<MapType> = useState(
     listOfMaps[0]
   );
+  const [addLayer, setAddLayer]: useStateProp<boolean> = useState(false)
+  const [polygon, setPolygon]: useStateProp<number[][]> = useState([])
+  const [isDrawing, setIsDrawing]: useStateProp<boolean> = useState(false)
 
   const onClickmap = (map: MapType) => {
     if (map.id != currentMap.id) {
@@ -61,6 +66,18 @@ export const HomeMapPage = () => {
       zoom: data.zoom,
     }));
   };
+
+  const handleDrawPolygon = (data: { coords: Coords }) => {
+    const [longitude, latitude] = data.coords;
+    console.log(longitude, latitude)
+
+    if (!isDrawing) {
+      setPolygon([[longitude, latitude]])
+      setIsDrawing(true)
+    } else {
+      setPolygon((prev: number[][]) => [...prev, [longitude, latitude]])
+    }
+  }
 
   const handleCreateMap = (value: { name: string }) => {
     if (coords.length) {
@@ -151,6 +168,21 @@ export const HomeMapPage = () => {
     }
   };
 
+  // Create Polygon Layer
+  const polygonLayer = new PolygonLayer({
+    id: "polygon-layer",
+    data: polygon.length > 2 ? [{ coordinates: polygon }] : [],
+    pickable: true,
+    stroked: true,
+    filled: true,
+    extruded: false,
+    lineWidthMinPixels: 2,
+    getPolygon: (d) => d.coordinates,
+    getFillColor: [0, 128, 255, 120], // Blue with transparency
+    getLineColor: [255, 255, 255], // White border
+    getLineWidth: 2,
+  });
+
   return (
     <Suspense fallback={<LoaderMap />}>
       <h2>Smart Harvest</h2>
@@ -171,12 +203,17 @@ export const HomeMapPage = () => {
           onClick={(data) => {
             if (displayForm || displayEditForm) {
               handleCenterPoint({
-                coords: (data.coordinate as [number, number]) ?? [0, 0],
+                coords: (data.coordinate as Coords) ?? [0, 0],
                 zoom: data.viewport?.zoom ?? 1,
               });
+            } else if (addLayer) {
+              handleDrawPolygon({
+                coords: (data.coordinate as Coords) ?? [0, 0],
+              })
             }
           }}
           getCursor={(event) => handleCursor(event)}
+          layers={[polygonLayer]}
         >
           <Map
             mapStyle={MAP_STYLE}

@@ -1,3 +1,4 @@
+import { PencilSimple } from "@phosphor-icons/react";
 import "./index.css";
 import { FC } from "react";
 import {
@@ -38,32 +39,40 @@ export const FormNewMap: FC<props<{ name: string }>> = ({
               field: { value, onChange, onBlur, ref },
               formState: { errors },
             }) => (
-              <input
-                className="inputName"
-                type="text"
-                placeholder="Name"
-                onChange={onChange}
-                onBlur={onBlur}
-                ref={ref}
-                value={value}
+              <div
+                className="boxInputName"
                 style={{
                   border: errors.name ? "1px solid red" : "none",
+                  borderBottom: "1px solid rgba(255, 255, 255, .3)",
                 }}
-              />
+              >
+                <input
+                  className="inputName"
+                  type="text"
+                  placeholder="Name"
+                  onChange={onChange}
+                  onBlur={onBlur}
+                  ref={ref}
+                  value={value}
+                />
+                <PencilSimple size={18} className="inputIconPencil"/>
+              </div>
             )}
           />
-          <button type="submit" className="btnCreateMap">
-            Create
-          </button>
-          <button
-            className="btnCancellMap"
-            onClick={() => handleCancelCreateMap()}
-          >
-            Cancel
-          </button>
           {errorCoords && (
             <span style={{ color: "white" }}>Coordinates required</span>
           )}
+          <div className="boxButtons">
+            <button type="submit" className="btnCreateMap">
+              Create
+            </button>
+            <button
+              className="btnCancellMap"
+              onClick={() => handleCancelCreateMap()}
+            >
+              Cancel
+            </button>
+          </div>
         </form>
       )}
     </>
