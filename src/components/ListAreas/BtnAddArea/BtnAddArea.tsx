@@ -2,16 +2,14 @@ import { FC } from "react";
 import "./index.css";
 
 type props = {
-  addArea: boolean;
   handleAddArea: () => void;
 };
 
-export const BtnAddArea: FC<props> = ({ addArea, handleAddArea }) => {
+export const BtnAddArea: FC<props> = ({ handleAddArea }) => {
   return (
     <>
       <button
-        className={addArea ? "btnAddDisabled" : "btnAddEnabled"}
-        disabled={addArea}
+        className={"btnAddEnabled"}
         onClick={() => handleAddArea()}
       >
         Add area

@@ -1,0 +1,27 @@
+.containerFormArea {
+  border: 1px solid rgba(255, 255, 255, .3);
+  border-radius: 12px;
+  min-width: 280px;
+  max-width: 280px;
+  padding: 10px 15px;
+  display: flex;
+  flex-direction: column;
+}
+
+.inputNameArea, .inputTagName, .inputCropName {
+
+}
+
+.containerBtnsFormArea {
+  display: flex;
+  flex-direction: column;
+  margin-top: 12px;
+}
+
+.hrBtnsFormArea {
+  width: 85%;
+  opacity: .3;
+  height: 1px;
+  border: none;
+  border-top: 1px solid white;
+}

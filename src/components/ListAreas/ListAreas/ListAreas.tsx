@@ -1,21 +1,21 @@
 import { FC } from "react";
-import { AreaType } from "../../../types/areas";
+import { Area } from "../../../types/areas";
 import { BtnArea } from "../BtnArea/BtnArea";
 import { BtnEditArea } from "../BtnEditArea/BtnEditArea";
-import "./index.css"
+import "./index.css";
 
 type props = {
-  listOfAreas: AreaType[];
+  listAreas: Area[];
   onClickArea: () => void;
 };
 
-export const ListAreas: FC<props> = ({ listOfAreas, onClickArea }) => {
+export const ListAreas: FC<props> = ({ listAreas, onClickArea }) => {
   return (
     <div className="btnContainerAreas">
-      {listOfAreas.map((map: AreaType) => (
-        <div key={map.id} className="btnBoxArea">
-          <BtnArea onClickArea={onClickArea} />
-          <BtnEditArea currentArea="a"/>
+      {listAreas.map((area: Area, index) => (
+        <div key={index} className={"btnBoxArea"}>
+          <BtnArea area={area} onClickArea={onClickArea} />
+          <BtnEditArea currentArea="a" />
         </div>
       ))}
     </div>

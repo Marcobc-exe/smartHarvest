@@ -8,14 +8,14 @@ import {
   UseFormHandleSubmit,
 } from "react-hook-form";
 import { ContainerListAreas } from "../../ListAreas/ContainerListAreas";
-import { AreaType } from "../../../types/areas";
+import { Area } from "../../../types/areas";
 
 type props<T extends FieldValues> = {
   addArea: boolean;
   displayEditForm: boolean;
   control: Control<T>;
   errorCoords: boolean;
-  listOftArea: AreaType[];
+  listAreas: Area[];
   handleSaveMap: (value: T) => void;
   handleSubmit: UseFormHandleSubmit<T>;
   handleCancelEditMap: () => void;
@@ -29,7 +29,7 @@ export const FormEditMap: FC<props<{ name: string }>> = ({
   displayEditForm,
   control,
   errorCoords,
-  listOftArea,
+  listAreas,
   handleSaveMap,
   handleSubmit,
   handleCancelEditMap,
@@ -39,7 +39,7 @@ export const FormEditMap: FC<props<{ name: string }>> = ({
 }) => {
   return (
     <>
-      {displayEditForm && (
+      {(displayEditForm && !addArea) && (
         <form className="formMapEdit" onSubmit={handleSubmit(handleSaveMap)}>
           <Controller
             name="name"
@@ -75,8 +75,7 @@ export const FormEditMap: FC<props<{ name: string }>> = ({
             <span style={{ color: "white" }}>Coordinates required</span>
           )}
           <ContainerListAreas
-            addArea={addArea}
-            listOfAreas={listOftArea}
+            listAreas={listAreas}
             onClickArea={onClickArea}
             handleAddArea={handleAddArea}
           />

@@ -21,6 +21,9 @@ import { useNavigate } from "react-router-dom";
 import { handleCursor } from "../../../utils/handleCursor";
 import { LoaderMap } from "../../../components/LoaderMap/LoaderMap";
 import { ContainerListMaps } from "../../../components/ListMaps/ContainerListMaps";
+import { FormArea } from "../../../components/Forms/FormArea/FormArea";
+import { Area } from "../../../types/areas";
+import { handlePolygonLayer } from "../../../utils/polygonLayer";
 
 export const HomeMapPage = () => {
   const navigate = useNavigate();
@@ -38,10 +41,17 @@ export const HomeMapPage = () => {
   const [currentMap, setCurrentMap]: useStateProp<MapType> = useState(
     listOfMaps[0]
   );
-  const [addLayer, setAddLayer]: useStateProp<boolean> = useState(false)
-  const [polygon, setPolygon]: useStateProp<number[][]> = useState([])
+  const [area, setArea]: useStateProp<number[][]> = useState([])
   const [isDrawing, setIsDrawing]: useStateProp<boolean> = useState(false)
   const [addArea, setAddArea]: useStateProp<boolean> = useState(false);
+  // const [currentArea, setCurrentArea]: useStateProp<Area[] | []> = useState([]);
+
+  const areas: Area[] | [] = JSON.parse(
+    localStorage.getItem("areas") ?? "[]"
+  );
+  const listAreas = listOfMaps.length ? areas.filter(area => 
+    area.features[0].properties.farmId === parseInt(currentMap.id)
+  ) : [];
 
   const onClickmap = (map: MapType) => {
     if (map.id != currentMap.id) {
@@ -70,10 +80,10 @@ export const HomeMapPage = () => {
     console.log(longitude, latitude)
 
     if (!isDrawing) {
-      setPolygon([[longitude, latitude]])
+      setArea([[longitude, latitude]])
       setIsDrawing(true)
     } else {
-      setPolygon((prev: number[][]) => [...prev, [longitude, latitude]])
+      setArea((prev: number[][]) => [...prev, [longitude, latitude]])
     }
   }
 
@@ -123,6 +133,8 @@ export const HomeMapPage = () => {
   };
 
   const handleSaveMap = (value: { name: string }) => {
+    // ? if both are the same do nothing
+    // ? if addArea is true add new area to local Storage areas
     const listFarms: MapType[] = JSON.parse(
       localStorage.getItem("maps") ?? "[]"
     );
@@ -171,36 +183,28 @@ export const HomeMapPage = () => {
     setAddArea(true);
   }
 
+  const handleSetAddArea = (value: boolean) => {
+    setAddArea(value)
+  }
+
+  const handleSetArea = () => {
+    setArea([])
+  }
+
   const listOftArea = [
     { id: "1" },
-    { id: "1" },
-    { id: "1" },
-    { id: "1" },
-    { id: "1" },
-    { id: "1" },
-    { id: "1" },
-    { id: "1" },
-    { id: "1" },
-    { id: "1" },
+    { id: "2" },
+    { id: "3" },
+    { id: "4" },
+    { id: "5" },
+    { id: "6" },
+    { id: "7" },
+    { id: "8" },
+    { id: "9" },
+    { id: "10" },
   ];
 
   const onClickArea = () => {};
-
-
-  // Create Polygon Layer
-  const polygonLayer = new PolygonLayer({
-    id: "polygon-layer",
-    data: polygon.length > 2 ? [{ coordinates: polygon }] : [],
-    pickable: true,
-    stroked: true,
-    filled: true,
-    extruded: false,
-    lineWidthMinPixels: 2,
-    getPolygon: (d) => d.coordinates,
-    getFillColor: [0, 128, 255, 120], // Blue with transparency
-    getLineColor: [255, 255, 255], // White border
-    getLineWidth: 2,
-  });
 
   return (
     <Suspense fallback={<LoaderMap />}>
@@ -220,19 +224,19 @@ export const HomeMapPage = () => {
           controller={true}
           style={STYLE_MAP}
           onClick={(data) => {
-            if (displayForm || displayEditForm) {
+            if ((displayForm || displayEditForm) && !addArea) {
               handleCenterPoint({
                 coords: (data.coordinate as Coords) ?? [0, 0],
                 zoom: data.viewport?.zoom ?? 1,
               });
-            } else if (addLayer) {
+            } else if (addArea) {
               handleDrawPolygon({
                 coords: (data.coordinate as Coords) ?? [0, 0],
               })
             }
           }}
           getCursor={(event) => handleCursor(event)}
-          layers={[polygonLayer]}
+          layers={[handlePolygonLayer(listAreas, area)]}
         >
           <Map
             mapStyle={MAP_STYLE}
@@ -242,7 +246,7 @@ export const HomeMapPage = () => {
             doubleClickZoom={false}
             dragPan={false}
           >
-            <MarkerCreateMap coords={coords} />
+            <MarkerCreateMap addArea={addArea} coords={coords} />
             <NavigationControl />
           </Map>
         </DeckGl>
@@ -259,13 +263,20 @@ export const HomeMapPage = () => {
           displayEditForm={displayEditForm}
           control={control}
           errorCoords={errorCoords}
-          listOftArea={listOftArea}
+          listAreas={listAreas}
           handleSaveMap={handleSaveMap}
           handleSubmit={handleSubmit}
           handleCancelEditMap={handleCancelEditMap}
           handleDeleteMap={handleDeleteMap}
           handleAddArea={handleAddArea}
           onClickArea={onClickArea}
+        />
+        <FormArea
+          addArea={addArea}
+          area={area}
+          currentMap={currentMap}
+          handleSetAddArea={handleSetAddArea}
+          handleSetArea={handleSetArea}
         />
       </div>
     </Suspense>

@@ -9,16 +9,14 @@ export const BtnEditArea: FC<props> = () => {
   return (
     <PencilSimple
       size={14}
-      className="btnEditArea"
+      className={"btnEditArea"}
       // className={
       //   displayForm || displayEditForm || currentMap.id == map.id
       //     ? "btnEditDisabled"
       //     : "btnEditMap"
       // }
       // onClick={() => {
-      //   if (!displayForm) {
-      //     handleEditMap(map);
-      //   }
+        // handleEditMap(map);
       // }}
       // style={{
       //   opacity:

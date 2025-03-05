@@ -2,25 +2,23 @@ import { FC } from "react";
 import { BtnAddArea } from "./BtnAddArea/BtnAddArea";
 import "./index.css";
 import { ListAreas } from "./ListAreas/ListAreas";
-import { AreaType } from "../../types/areas";
+import { Area } from "../../types/areas";
 
 type props = {
-  addArea: boolean;
-  listOfAreas: AreaType[];
+  listAreas: Area[];
   handleAddArea: () => void;
   onClickArea: () => void;
 };
 
 export const ContainerListAreas: FC<props> = ({
-  addArea,
-  listOfAreas,
+  listAreas,
   handleAddArea,
   onClickArea,
 }) => {
   return (
     <div className="containerBtnAreas">
-      <BtnAddArea addArea={addArea} handleAddArea={handleAddArea} />
-      <ListAreas listOfAreas={listOfAreas} onClickArea={onClickArea} />
+      <BtnAddArea handleAddArea={handleAddArea} />
+      <ListAreas listAreas={listAreas} onClickArea={onClickArea} />
     </div>
   );
 };
