@@ -4,8 +4,6 @@ import { Map, NavigationControl } from "react-map-gl/mapbox";
 import "mapbox-gl/dist/mapbox-gl.css";
 import DeckGl from "deck.gl";
 import {PolygonLayer} from "@deck.gl/layers"
-// import { DrawLineStringMode, EditingMode, Editor } from "react-map-gl-draw";
-
 import { useForm } from "react-hook-form";
 import { Coords, dataNewMap, InputMap, MapType } from "../../../types/map";
 import { useStateProp } from "../../../types/read";
@@ -13,7 +11,6 @@ import {
   defaultMap,
   MAP_STYLE,
   MAPBOX_TOKEN,
-  STYLE_ADD_MAP,
   STYLE_MAP,
 } from "../../../config/configMap";
 import { initialView } from "../../../utils/initialViewfunction";
@@ -44,6 +41,7 @@ export const HomeMapPage = () => {
   const [addLayer, setAddLayer]: useStateProp<boolean> = useState(false)
   const [polygon, setPolygon]: useStateProp<number[][]> = useState([])
   const [isDrawing, setIsDrawing]: useStateProp<boolean> = useState(false)
+  const [addArea, setAddArea]: useStateProp<boolean> = useState(false);
 
   const onClickmap = (map: MapType) => {
     if (map.id != currentMap.id) {
@@ -153,6 +151,7 @@ export const HomeMapPage = () => {
     setDisplayEditForm(false);
     setCoords([]);
     setErrorCoords(false);
+    setAddArea(false);
   };
 
   const handleDeleteMap = () => {
@@ -167,6 +166,26 @@ export const HomeMapPage = () => {
       navigate("/");
     }
   };
+
+  const handleAddArea = () => {
+    setAddArea(true);
+  }
+
+  const listOftArea = [
+    { id: "1" },
+    { id: "1" },
+    { id: "1" },
+    { id: "1" },
+    { id: "1" },
+    { id: "1" },
+    { id: "1" },
+    { id: "1" },
+    { id: "1" },
+    { id: "1" },
+  ];
+
+  const onClickArea = () => {};
+
 
   // Create Polygon Layer
   const polygonLayer = new PolygonLayer({
@@ -199,7 +218,7 @@ export const HomeMapPage = () => {
         <DeckGl
           initialViewState={initialView(currentMap)}
           controller={true}
-          style={displayForm || displayEditForm ? STYLE_ADD_MAP : STYLE_MAP}
+          style={STYLE_MAP}
           onClick={(data) => {
             if (displayForm || displayEditForm) {
               handleCenterPoint({
@@ -236,13 +255,17 @@ export const HomeMapPage = () => {
           handleCancelCreateMap={handleCancelCreateMap}
         />
         <FormEditMap
+          addArea={addArea}
           displayEditForm={displayEditForm}
           control={control}
           errorCoords={errorCoords}
+          listOftArea={listOftArea}
           handleSaveMap={handleSaveMap}
           handleSubmit={handleSubmit}
           handleCancelEditMap={handleCancelEditMap}
           handleDeleteMap={handleDeleteMap}
+          handleAddArea={handleAddArea}
+          onClickArea={onClickArea}
         />
       </div>
     </Suspense>

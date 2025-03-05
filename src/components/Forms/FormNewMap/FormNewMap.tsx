@@ -38,36 +38,41 @@ export const FormNewMap: FC<props<{ name: string }>> = ({
             render={({
               field: { value, onChange, onBlur, ref },
               formState: { errors },
-            }) => (
-              <div
-                className="boxInputName"
-                style={{
-                  border: errors.name ? "1px solid red" : "none",
-                  borderBottom: "1px solid rgba(255, 255, 255, .3)",
-                }}
-              >
-                <input
-                  className="inputName"
-                  type="text"
-                  placeholder="Name"
-                  onChange={onChange}
-                  onBlur={onBlur}
-                  ref={ref}
-                  value={value}
-                />
-                <PencilSimple size={18} className="inputIconPencil"/>
-              </div>
-            )}
+            }) => {
+              console.log(errors.name);
+              return (
+                <div
+                  className="boxInputName"
+                  style={{
+                    borderBottom:
+                      errors.name?.type === "required"
+                        ? "1px solid red"
+                        : "1px solid rgba(255, 255, 255, .3)",
+                  }}
+                >
+                  <input
+                    className="inputName"
+                    type="text"
+                    placeholder="Name"
+                    onChange={onChange}
+                    onBlur={onBlur}
+                    ref={ref}
+                    value={value}
+                  />
+                  <PencilSimple size={18} className="inputIconPencil" />
+                </div>
+              );
+            }}
           />
           {errorCoords && (
             <span style={{ color: "white" }}>Coordinates required</span>
           )}
-          <div className="boxButtons">
-            <button type="submit" className="btnCreateMap">
+          <div className="boxButtonsNewMap">
+            <button type="submit" className="btnCreateNewMap">
               Create
             </button>
             <button
-              className="btnCancellMap"
+              className="btnCancellNewMap"
               onClick={() => handleCancelCreateMap()}
             >
               Cancel

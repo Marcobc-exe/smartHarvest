@@ -1,0 +1,72 @@
+.btnContainerAreas {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  max-height: calc(100% - 14%);
+  overflow-y: auto;
+  overflow-x: hidden;
+  padding-top: 10px;
+}
+
+.btnContainerAreas::-webkit-scrollbar {
+  border-radius: 10px;
+  width: 5px;
+}
+
+.btnContainerAreas::-webkit-scrollbar-track {
+  background: transparent; 
+  border: 1px solid #2c3e50;
+  border-radius: 14px;
+}
+
+.btnContainerAreas::-webkit-scrollbar-thumb {
+  background: rgb(173, 144, 39);
+  border-radius: 4px;
+}
+
+.btnContainerAreas::-webkit-scrollbar-thumb:hover {
+  background: #555;
+  transition: .1s all ease-in-out;
+}
+
+.btnBoxArea {
+  display: flex;
+  flex-direction: row;
+  justify-items: center;
+  margin: 4px 0;
+}
+
+.btnArea {
+  background-color: #34495e;
+  border: none;
+  border-top-left-radius: 8px;
+  border-bottom-left-radius: 8px;
+  min-height: 40px;
+  width: 190px;
+  color: white;
+  font-size: 14px;
+}
+
+.btnArea:hover {
+  background-color: #2c3e50;
+  transition: .18s all ease-in-out;
+  cursor: pointer;
+}
+
+.btnEditArea {
+  background-color: #34495e;
+  min-height: 40px;
+  border-top-right-radius: 8px;
+  border-bottom-right-radius: 8px;
+  border-left: 1px solid rgb(180, 180, 180);
+  cursor: pointer;
+  width: 24px;
+  padding: 0 3px;
+}
+
+.btnEditArea:hover {
+  background-color: #2c3e50;
+  transition: .18s all ease-in-out;
+  cursor: pointer;
+}

@@ -7,25 +7,35 @@ import {
   FieldValues,
   UseFormHandleSubmit,
 } from "react-hook-form";
+import { ContainerListAreas } from "../../ListAreas/ContainerListAreas";
+import { AreaType } from "../../../types/areas";
 
 type props<T extends FieldValues> = {
+  addArea: boolean;
   displayEditForm: boolean;
   control: Control<T>;
   errorCoords: boolean;
+  listOftArea: AreaType[];
   handleSaveMap: (value: T) => void;
   handleSubmit: UseFormHandleSubmit<T>;
   handleCancelEditMap: () => void;
   handleDeleteMap: () => void;
+  handleAddArea: () => void;
+  onClickArea: () => void;
 };
 
 export const FormEditMap: FC<props<{ name: string }>> = ({
+  addArea,
   displayEditForm,
   control,
   errorCoords,
+  listOftArea,
   handleSaveMap,
   handleSubmit,
   handleCancelEditMap,
   handleDeleteMap,
+  handleAddArea,
+  onClickArea,
 }) => {
   return (
     <>
@@ -57,21 +67,30 @@ export const FormEditMap: FC<props<{ name: string }>> = ({
                   ref={ref}
                   value={value}
                 />
-                <PencilSimple size={18} className="inputIconPencil"/>
+                <PencilSimple size={18} className="inputIconPencil" />
               </div>
             )}
           />
           {errorCoords && (
             <span style={{ color: "white" }}>Coordinates required</span>
           )}
+          <ContainerListAreas
+            addArea={addArea}
+            listOfAreas={listOftArea}
+            onClickArea={onClickArea}
+            handleAddArea={handleAddArea}
+          />
           <div className="boxButtons">
             <button type="submit" className="btnCreateMap">
               Save
             </button>
-            <button className="btnCancelMap" onClick={() => handleCancelEditMap()}>
+            <button
+              className="btnCancelMap"
+              onClick={() => handleCancelEditMap()}
+            >
               Cancel
             </button>
-            <hr className="hrDelete"/>
+            <hr className="hrDelete" />
             <button className="btnDeleteMap" onClick={() => handleDeleteMap()}>
               Delete
             </button>
