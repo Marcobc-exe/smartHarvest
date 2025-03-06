@@ -18,10 +18,25 @@
   margin-top: 12px;
 }
 
-.hrBtnsFormArea {
+.hrBtnsFormArea, .hrBtnUndo {
   width: 85%;
   opacity: .3;
   height: 1px;
   border: none;
   border-top: 1px solid white;
+}
+
+.btnUndoPolygon {
+  border: none;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.btnUndoPolygon:hover {
+  cursor: pointer;
+}
+
+.hrBtnUndo {
+  margin: 12px 20px;
 }

@@ -1,9 +1,8 @@
 import "./index.css";
 import { Suspense, useState } from "react";
-import { Map, NavigationControl } from "react-map-gl/mapbox";
+import { Map, Marker } from "react-map-gl/mapbox";
 import "mapbox-gl/dist/mapbox-gl.css";
 import DeckGl from "deck.gl";
-import {PolygonLayer} from "@deck.gl/layers"
 import { useForm } from "react-hook-form";
 import { Coords, dataNewMap, InputMap, MapType } from "../../../types/map";
 import { useStateProp } from "../../../types/read";
@@ -24,6 +23,7 @@ import { ContainerListMaps } from "../../../components/ListMaps/ContainerListMap
 import { FormArea } from "../../../components/Forms/FormArea/FormArea";
 import { Area } from "../../../types/areas";
 import { handlePolygonLayer } from "../../../utils/polygonLayer";
+import { AreaPoints } from "../../../components/Markers/AreaPoints/AreaPoints";
 
 export const HomeMapPage = () => {
   const navigate = useNavigate();
@@ -77,7 +77,7 @@ export const HomeMapPage = () => {
 
   const handleDrawPolygon = (data: { coords: Coords }) => {
     const [longitude, latitude] = data.coords;
-    console.log(longitude, latitude)
+    // console.log(longitude, latitude)
 
     if (!isDrawing) {
       setArea([[longitude, latitude]])
@@ -85,6 +85,11 @@ export const HomeMapPage = () => {
     } else {
       setArea((prev: number[][]) => [...prev, [longitude, latitude]])
     }
+  }
+
+  const handleUndoPolygon = () => {
+    const list = area.slice(0, -1);
+    setArea(list);
   }
 
   const handleCreateMap = (value: { name: string }) => {
@@ -191,19 +196,6 @@ export const HomeMapPage = () => {
     setArea([])
   }
 
-  const listOftArea = [
-    { id: "1" },
-    { id: "2" },
-    { id: "3" },
-    { id: "4" },
-    { id: "5" },
-    { id: "6" },
-    { id: "7" },
-    { id: "8" },
-    { id: "9" },
-    { id: "10" },
-  ];
-
   const onClickArea = () => {};
 
   return (
@@ -247,7 +239,7 @@ export const HomeMapPage = () => {
             dragPan={false}
           >
             <MarkerCreateMap addArea={addArea} coords={coords} />
-            <NavigationControl />
+            <AreaPoints area={area} />
           </Map>
         </DeckGl>
         <FormNewMap
@@ -277,6 +269,7 @@ export const HomeMapPage = () => {
           currentMap={currentMap}
           handleSetAddArea={handleSetAddArea}
           handleSetArea={handleSetArea}
+          handleUndoPolygon={handleUndoPolygon}
         />
       </div>
     </Suspense>

@@ -4,6 +4,7 @@ import { Area, InputArea } from "../../../types/areas";
 import { FC, useState } from "react";
 import { useStateProp } from "../../../types/read";
 import { MapType } from "../../../types/map";
+import { ArrowBendDownLeft } from "@phosphor-icons/react";
 
 type props = {
   addArea: boolean;
@@ -11,9 +12,10 @@ type props = {
   currentMap: MapType;
   handleSetAddArea: (value: boolean) => void;
   handleSetArea: () => void;
+  handleUndoPolygon: () => void;
 };
 
-export const FormArea: FC<props> = ({ addArea, area, currentMap, handleSetAddArea, handleSetArea }) => {
+export const FormArea: FC<props> = ({ addArea, area, currentMap, handleSetAddArea, handleSetArea, handleUndoPolygon }) => {
   const { control, handleSubmit, resetField, setValue } = useForm<InputArea>({
     defaultValues: { name: "", tagName: "", cropName: "" },
   });
@@ -64,6 +66,10 @@ export const FormArea: FC<props> = ({ addArea, area, currentMap, handleSetAddAre
           className="containerFormArea"
           onSubmit={handleSubmit(handleSaveArea)}
         >
+          <button disabled={area.length == 0} className="btnUndoPolygon" onClick={() => handleUndoPolygon()}>
+            <ArrowBendDownLeft size={16} weight="bold"/>
+          </button>
+          <hr className="hrBtnUndo"/>
           <Controller
             control={control}
             name="name"
