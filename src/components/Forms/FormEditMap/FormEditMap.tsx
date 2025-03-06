@@ -1,4 +1,4 @@
-import { PencilSimple } from "@phosphor-icons/react";
+import { PencilSimple, X } from "@phosphor-icons/react";
 import "./index.css";
 import { FC } from "react";
 import {
@@ -41,6 +41,11 @@ export const FormEditMap: FC<props<{ name: string }>> = ({
     <>
       {(displayEditForm && !addArea) && (
         <form className="formMapEdit" onSubmit={handleSubmit(handleSaveMap)}>
+          <div style={{ position: "relative", marginBottom: "34px"}}>
+            <button className="btnClosePanel" onClick={() => handleCancelEditMap()}>
+              <X weight="bold" color="white"/>
+            </button>
+          </div>
           <Controller
             name="name"
             control={control}

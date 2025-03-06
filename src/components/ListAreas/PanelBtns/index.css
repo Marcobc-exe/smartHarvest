@@ -1,0 +1,45 @@
+.containerPanelBtns {
+  position: relative;
+  display: grid;
+  grid-template-columns: 1fr 10%;
+}
+
+.containerEditBtns {
+  display: flex;
+  flex-direction: row;
+  gap: 12px;
+}
+
+.btnClosePanel {
+  border: none;
+  border-radius: 30px;
+  padding: 0;
+  width: 28px;
+  height: 28px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: transparent;
+  cursor: pointer;
+}
+
+.btnClosePanel:hover {
+  background-color: #ffffff2c;
+  transition: .18s all ease-in-out;
+}
+
+.btnUndoPolygon, .btnUndoPolygonDisabled, .btnDelPolygon, .btnDelPolygonDisabled {
+  border: none;
+  border-radius: 30px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 28px;
+  height: 28px;
+}
+
+.btnUndoPolygon:hover, .btnDelPolygon:hover {
+  cursor: pointer;
+  background-color: #ffffffbd;
+  transition: .18s all ease-in-out;
+}

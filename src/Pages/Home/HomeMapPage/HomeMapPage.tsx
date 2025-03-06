@@ -77,7 +77,6 @@ export const HomeMapPage = () => {
 
   const handleDrawPolygon = (data: { coords: Coords }) => {
     const [longitude, latitude] = data.coords;
-    // console.log(longitude, latitude)
 
     if (!isDrawing) {
       setArea([[longitude, latitude]])

@@ -4,7 +4,7 @@ import { Area, InputArea } from "../../../types/areas";
 import { FC, useState } from "react";
 import { useStateProp } from "../../../types/read";
 import { MapType } from "../../../types/map";
-import { ArrowBendDownLeft } from "@phosphor-icons/react";
+import { PanelBtn } from "../../ListAreas/PanelBtns/PanelBtn";
 
 type props = {
   addArea: boolean;
@@ -15,17 +15,26 @@ type props = {
   handleUndoPolygon: () => void;
 };
 
-export const FormArea: FC<props> = ({ addArea, area, currentMap, handleSetAddArea, handleSetArea, handleUndoPolygon }) => {
+export const FormArea: FC<props> = ({
+  addArea,
+  area,
+  currentMap,
+  handleSetAddArea,
+  handleSetArea,
+  handleUndoPolygon,
+}) => {
   const { control, handleSubmit, resetField, setValue } = useForm<InputArea>({
     defaultValues: { name: "", tagName: "", cropName: "" },
   });
-  const [errorArea, setErrorArea]: useStateProp<boolean> = useState(false)
+  const [errorArea, setErrorArea]: useStateProp<boolean> = useState(false);
 
   const handleSaveArea = (values: InputArea) => {
     if (area.length) {
       // const cropName = values.cropName;
       const cropName = 1;
-      const listAreas: Area[] = JSON.parse(localStorage.getItem("areas") ?? "[]");
+      const listAreas: Area[] = JSON.parse(
+        localStorage.getItem("areas") ?? "[]"
+      );
       const newArea: Area = {
         type: "FeatureCollection",
         features: [
@@ -51,13 +60,15 @@ export const FormArea: FC<props> = ({ addArea, area, currentMap, handleSetAddAre
       setErrorArea(false);
       handleSetAddArea(false);
       handleSetArea();
-      resetField("name")
-      resetField("cropName")
-      resetField("tagName")
+      resetField("name");
+      resetField("cropName");
+      resetField("tagName");
     } else {
       setErrorArea(true);
     }
   };
+
+  const handleClose = () => {};
 
   return (
     <>
@@ -66,15 +77,18 @@ export const FormArea: FC<props> = ({ addArea, area, currentMap, handleSetAddAre
           className="containerFormArea"
           onSubmit={handleSubmit(handleSaveArea)}
         >
-          <button disabled={area.length == 0} className="btnUndoPolygon" onClick={() => handleUndoPolygon()}>
-            <ArrowBendDownLeft size={16} weight="bold"/>
-          </button>
-          <hr className="hrBtnUndo"/>
+          <PanelBtn
+            area={area}
+            handleClose={handleClose}
+            handleUndoPolygon={handleUndoPolygon}
+            handleDelPolygon={handleSetArea}
+          />
+          <hr className="hrBtnUndo" />
           <Controller
             control={control}
             name="name"
             rules={{
-              required: true
+              required: true,
             }}
             render={({
               field: { value, onChange, onBlur, ref },
@@ -97,7 +111,7 @@ export const FormArea: FC<props> = ({ addArea, area, currentMap, handleSetAddAre
             control={control}
             name="tagName"
             rules={{
-              required: true
+              required: true,
             }}
             render={({
               field: { value, onChange, onBlur, ref },
@@ -120,7 +134,7 @@ export const FormArea: FC<props> = ({ addArea, area, currentMap, handleSetAddAre
             control={control}
             name="cropName"
             rules={{
-              required: true
+              required: true,
             }}
             render={({
               field: { value, onChange, onBlur, ref },
@@ -139,9 +153,9 @@ export const FormArea: FC<props> = ({ addArea, area, currentMap, handleSetAddAre
               );
             }}
           />
-          {(errorArea && area.length < 3) && <span>Coordinates required</span>}
+          {errorArea && area.length < 3 && <span>Coordinates required</span>}
           <div className="containerBtnsFormArea">
-            <hr className="hrBtnsFormArea"/>
+            <hr className="hrBtnsFormArea" />
             <button type="submit">Save</button>
             <button>Cancel</button>
           </div>
