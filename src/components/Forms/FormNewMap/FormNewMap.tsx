@@ -7,6 +7,8 @@ import {
   FieldValues,
   UseFormHandleSubmit,
 } from "react-hook-form";
+import { Input } from "../../Inputs/InputController";
+import { requiredRule } from "../../../utils/const";
 
 type props<T extends FieldValues> = {
   displayForm: boolean;
@@ -29,40 +31,14 @@ export const FormNewMap: FC<props<{ name: string }>> = ({
     <>
       {displayForm && (
         <form className="formMap" onSubmit={handleSubmit(handleCreateMap)}>
-          <Controller
-            name="name"
+          <Input
             control={control}
-            rules={{
-              required: true,
-            }}
-            render={({
-              field: { value, onChange, onBlur, ref },
-              formState: { errors },
-            }) => {
-              console.log(errors.name);
-              return (
-                <div
-                  className="boxInputName"
-                  style={{
-                    borderBottom:
-                      errors.name?.type === "required"
-                        ? "1px solid red"
-                        : "1px solid rgba(255, 255, 255, .3)",
-                  }}
-                >
-                  <input
-                    className="inputName"
-                    type="text"
-                    placeholder="Name"
-                    onChange={onChange}
-                    onBlur={onBlur}
-                    ref={ref}
-                    value={value}
-                  />
-                  <PencilSimple size={18} className="inputIconPencil" />
-                </div>
-              );
-            }}
+            name="name"
+            placeholder="Name"
+            rules={requiredRule}
+            classNameBox="boxInputName"
+            classNameInput="inputName"
+            classNameIcon="inputIconPencil"
           />
           {errorCoords && (
             <span style={{ color: "white" }}>Coordinates required</span>

@@ -1,14 +1,11 @@
-import { PencilSimple, X } from "@phosphor-icons/react";
+import { X } from "@phosphor-icons/react";
 import "./index.css";
 import { FC } from "react";
-import {
-  Control,
-  Controller,
-  FieldValues,
-  UseFormHandleSubmit,
-} from "react-hook-form";
+import { Control, FieldValues, UseFormHandleSubmit } from "react-hook-form";
 import { ContainerListAreas } from "../../ListAreas/ContainerListAreas";
 import { Area } from "../../../types/areas";
+import { Input } from "../../Inputs/InputController";
+import { requiredRule } from "../../../utils/const";
 
 type props<T extends FieldValues> = {
   addArea: boolean;
@@ -39,42 +36,24 @@ export const FormEditMap: FC<props<{ name: string }>> = ({
 }) => {
   return (
     <>
-      {(displayEditForm && !addArea) && (
+      {displayEditForm && !addArea && (
         <form className="formMapEdit" onSubmit={handleSubmit(handleSaveMap)}>
-          <div style={{ position: "relative", marginBottom: "34px"}}>
-            <button className="btnClosePanel" onClick={() => handleCancelEditMap()}>
-              <X weight="bold" color="white"/>
+          <div style={{ position: "relative", marginBottom: "34px" }}>
+            <button
+              className="btnClosePanel"
+              onClick={() => handleCancelEditMap()}
+            >
+              <X weight="bold" color="white" />
             </button>
           </div>
-          <Controller
-            name="name"
+          <Input
             control={control}
-            rules={{
-              required: true,
-            }}
-            render={({
-              field: { value, onChange, onBlur, ref },
-              formState: { errors },
-            }) => (
-              <div
-                className="boxInputName"
-                style={{
-                  border: errors.name ? "1px solid red" : "none",
-                  borderBottom: "1px solid rgba(255, 255, 255, .3)",
-                }}
-              >
-                <input
-                  className="inputName"
-                  type="text"
-                  placeholder="Name"
-                  onChange={onChange}
-                  onBlur={onBlur}
-                  ref={ref}
-                  value={value}
-                />
-                <PencilSimple size={18} className="inputIconPencil" />
-              </div>
-            )}
+            name="name"
+            placeholder="Name"
+            rules={requiredRule}
+            classNameBox="boxInputName"
+            classNameInput="inputName"
+            classNameIcon="inputIconPencil"
           />
           {errorCoords && (
             <span style={{ color: "white" }}>Coordinates required</span>

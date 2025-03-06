@@ -7,6 +7,7 @@ type props = {
 };
 
 export const BtnArea: FC<props> = ({ area, onClickArea }) => {
+  // console.log(area.features[0].properties)
   return (
     <button
       className={"btnArea"}
@@ -17,7 +18,7 @@ export const BtnArea: FC<props> = ({ area, onClickArea }) => {
         //   currentMap.id == map.id ? "solid 1px rgb(173, 144, 39)" : "none",
       }}
     >
-      <span className="areaName">{area.features[0].properties.name}</span> |  
+      <span className="areaName">{area.features[0].properties.name}</span>
       <span className="areaName">{area.features[0].properties.tagName}</span>
     </button>
   )

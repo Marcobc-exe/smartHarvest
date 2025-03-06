@@ -27,7 +27,6 @@
 
 .inputName, .btnCreateMap, .btnCancelMap, .btnDeleteMap {
   width: 100%;
-  border-radius: 4px;
   padding: 5px 12px;
   margin-bottom: 12px;
   border: none;
@@ -63,7 +62,7 @@
 }
 
 .btnCreateMap:hover {
-  background-color: rgb(3, 161, 29);;
+  background-color: rgb(3, 161, 29);
   transition: .1s all ease-in-out;
 }
 

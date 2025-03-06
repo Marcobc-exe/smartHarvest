@@ -1,10 +1,12 @@
 import "./index.css";
-import { Controller, useForm } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import { Area, InputArea } from "../../../types/areas";
 import { FC, useState } from "react";
 import { useStateProp } from "../../../types/read";
 import { MapType } from "../../../types/map";
 import { PanelBtn } from "../../ListAreas/PanelBtns/PanelBtn";
+import { Input } from "../../Inputs/InputController";
+import { requiredRule } from "../../../utils/const";
 
 type props = {
   addArea: boolean;
@@ -13,6 +15,7 @@ type props = {
   handleSetAddArea: (value: boolean) => void;
   handleSetArea: () => void;
   handleUndoPolygon: () => void;
+  handleCancelArea: () => void;
 };
 
 export const FormArea: FC<props> = ({
@@ -22,11 +25,18 @@ export const FormArea: FC<props> = ({
   handleSetAddArea,
   handleSetArea,
   handleUndoPolygon,
+  handleCancelArea,
 }) => {
-  const { control, handleSubmit, resetField, setValue } = useForm<InputArea>({
+  const { control, handleSubmit, resetField } = useForm<InputArea>({
     defaultValues: { name: "", tagName: "", cropName: "" },
   });
   const [errorArea, setErrorArea]: useStateProp<boolean> = useState(false);
+
+  const handleResetFields = () => {
+    resetField("name");
+    resetField("cropName");
+    resetField("tagName");
+  };
 
   const handleSaveArea = (values: InputArea) => {
     if (area.length) {
@@ -60,15 +70,16 @@ export const FormArea: FC<props> = ({
       setErrorArea(false);
       handleSetAddArea(false);
       handleSetArea();
-      resetField("name");
-      resetField("cropName");
-      resetField("tagName");
+      handleResetFields();
     } else {
       setErrorArea(true);
     }
   };
 
-  const handleClose = () => {};
+  const handleClose = () => {
+    handleCancelArea();
+    handleResetFields();
+  };
 
   return (
     <>
@@ -84,80 +95,43 @@ export const FormArea: FC<props> = ({
             handleDelPolygon={handleSetArea}
           />
           <hr className="hrBtnUndo" />
-          <Controller
+          <span className="tlNewArea">New Area</span>
+          <Input
             control={control}
             name="name"
-            rules={{
-              required: true,
-            }}
-            render={({
-              field: { value, onChange, onBlur, ref },
-              formState: { errors },
-            }) => {
-              return (
-                <input
-                  className="inputNameArea"
-                  type="text"
-                  placeholder="Name"
-                  onChange={onChange}
-                  onBlur={onBlur}
-                  ref={ref}
-                  value={value}
-                />
-              );
-            }}
+            placeholder="Name"
+            rules={requiredRule}
+            classNameBox="boxInputCropName"
+            classNameInput="inputNameArea"
+            classNameIcon="iconPencil"
           />
-          <Controller
+          <Input
             control={control}
             name="tagName"
-            rules={{
-              required: true,
-            }}
-            render={({
-              field: { value, onChange, onBlur, ref },
-              formState: { errors },
-            }) => {
-              return (
-                <input
-                  className="inputTagName"
-                  type="text"
-                  placeholder="Tag name"
-                  onChange={onChange}
-                  onBlur={onBlur}
-                  ref={ref}
-                  value={value}
-                />
-              );
-            }}
+            placeholder="Tag name"
+            rules={requiredRule}
+            classNameBox="boxInputCropName"
+            classNameInput="inputTagName"
+            classNameIcon="iconPencil"
           />
-          <Controller
+          <Input
             control={control}
             name="cropName"
-            rules={{
-              required: true,
-            }}
-            render={({
-              field: { value, onChange, onBlur, ref },
-              formState: { errors },
-            }) => {
-              return (
-                <input
-                  className="inputCropName"
-                  type="text"
-                  placeholder="Crop name"
-                  onChange={onChange}
-                  onBlur={onBlur}
-                  ref={ref}
-                  value={value}
-                />
-              );
-            }}
+            placeholder="Crop name"
+            rules={requiredRule}
+            classNameBox="boxInputCropName"
+            classNameInput="inputCropName"
+            classNameIcon="iconPencil"
           />
           {errorArea && area.length < 3 && <span>Coordinates required</span>}
           <div className="containerBtnsFormArea">
             <hr className="hrBtnsFormArea" />
-            <button type="submit">Save</button>
-            <button>Cancel</button>
+            <button className="submitArea" type="submit">
+              Save
+            </button>
+            <button className="cancelArea" onClick={() => handleClose()}>
+              Cancel
+            </button>
           </div>
         </form>
       )}

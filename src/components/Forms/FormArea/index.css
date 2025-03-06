@@ -8,8 +8,29 @@
   flex-direction: column;
 }
 
-.inputNameArea, .inputTagName, .inputCropName {
+.tlNewArea {
+  margin: 12px 0;
+  font-size: 22px;
+  font-weight: 600;
+}
 
+.inputNameArea, .inputTagName, .inputCropName {
+  border: none;
+  margin-bottom: 12px;
+  padding: 10px 0 10px 10px;
+  background-color: transparent;
+  color: white;
+  font-size: 16px;
+  opacity: .6;
+}
+
+.inputNameArea:focus, .inputTagName:focus, .inputCropName:focus {
+  opacity: 1;
+  outline: none;
+}
+
+.iconPencil {
+  opacity: .6;
 }
 
 .containerBtnsFormArea {
@@ -26,6 +47,10 @@
   border-top: 1px solid white;
 }
 
+.hrBtnsFormArea {
+  margin-bottom: 26px;
+}
+
 .btnUndoPolygon {
   border: none;
   display: flex;
@@ -39,4 +64,40 @@
 
 .hrBtnUndo {
   margin: 12px 20px;
+}
+
+.submitArea, .cancelArea {
+  margin-bottom: 14px;
+  border: none;
+  border-radius: 4px;
+  padding: 6px;
+  cursor: pointer;
+}
+
+.submitArea {
+  background-color: rgb(45, 156, 63);
+  color: white;
+}
+
+.submitArea:hover {
+  background-color: rgb(3, 161, 29);
+  transition: .18s all ease-in-out;
+}
+
+.cancelArea {
+  background-color: rgb(240, 50, 50);
+  color: white;
+}
+
+.cancelArea:hover {
+  background-color: rgb(194, 40, 40);
+  transition: .18s all ease-in-out;
+}
+
+.boxInputCropName {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  margin-bottom: 18px;
+  align-items: center;
 }

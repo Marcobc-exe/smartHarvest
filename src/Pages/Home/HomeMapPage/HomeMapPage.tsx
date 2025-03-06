@@ -1,6 +1,6 @@
 import "./index.css";
 import { Suspense, useState } from "react";
-import { Map, Marker } from "react-map-gl/mapbox";
+import { Map } from "react-map-gl/mapbox";
 import "mapbox-gl/dist/mapbox-gl.css";
 import DeckGl from "deck.gl";
 import { useForm } from "react-hook-form";
@@ -41,17 +41,17 @@ export const HomeMapPage = () => {
   const [currentMap, setCurrentMap]: useStateProp<MapType> = useState(
     listOfMaps[0]
   );
-  const [area, setArea]: useStateProp<number[][]> = useState([])
-  const [isDrawing, setIsDrawing]: useStateProp<boolean> = useState(false)
+  const [area, setArea]: useStateProp<number[][]> = useState([]);
+  const [isDrawing, setIsDrawing]: useStateProp<boolean> = useState(false);
   const [addArea, setAddArea]: useStateProp<boolean> = useState(false);
   // const [currentArea, setCurrentArea]: useStateProp<Area[] | []> = useState([]);
 
-  const areas: Area[] | [] = JSON.parse(
-    localStorage.getItem("areas") ?? "[]"
-  );
-  const listAreas = listOfMaps.length ? areas.filter(area => 
-    area.features[0].properties.farmId === parseInt(currentMap.id)
-  ) : [];
+  const areas: Area[] | [] = JSON.parse(localStorage.getItem("areas") ?? "[]");
+  const listAreas = listOfMaps.length
+    ? areas.filter(
+        (area) => area.features[0].properties.farmId === parseInt(currentMap.id)
+      )
+    : [];
 
   const onClickmap = (map: MapType) => {
     if (map.id != currentMap.id) {
@@ -79,17 +79,17 @@ export const HomeMapPage = () => {
     const [longitude, latitude] = data.coords;
 
     if (!isDrawing) {
-      setArea([[longitude, latitude]])
-      setIsDrawing(true)
+      setArea([[longitude, latitude]]);
+      setIsDrawing(true);
     } else {
-      setArea((prev: number[][]) => [...prev, [longitude, latitude]])
+      setArea((prev: number[][]) => [...prev, [longitude, latitude]]);
     }
-  }
+  };
 
   const handleUndoPolygon = () => {
     const list = area.slice(0, -1);
     setArea(list);
-  }
+  };
 
   const handleCreateMap = (value: { name: string }) => {
     if (coords.length) {
@@ -170,6 +170,11 @@ export const HomeMapPage = () => {
     setAddArea(false);
   };
 
+  const handleCancelArea = () => {
+    setAddArea(false);
+    setArea([]);
+  };
+
   const handleDeleteMap = () => {
     const maps: MapType[] = JSON.parse(localStorage.getItem("maps") ?? "[]");
     const updatedMaps = maps.filter((map) => map.id !== currentMap.id);
@@ -185,15 +190,15 @@ export const HomeMapPage = () => {
 
   const handleAddArea = () => {
     setAddArea(true);
-  }
+  };
 
   const handleSetAddArea = (value: boolean) => {
-    setAddArea(value)
-  }
+    setAddArea(value);
+  };
 
   const handleSetArea = () => {
-    setArea([])
-  }
+    setArea([]);
+  };
 
   const onClickArea = () => {};
 
@@ -223,7 +228,7 @@ export const HomeMapPage = () => {
             } else if (addArea) {
               handleDrawPolygon({
                 coords: (data.coordinate as Coords) ?? [0, 0],
-              })
+              });
             }
           }}
           getCursor={(event) => handleCursor(event)}
@@ -269,6 +274,7 @@ export const HomeMapPage = () => {
           handleSetAddArea={handleSetAddArea}
           handleSetArea={handleSetArea}
           handleUndoPolygon={handleUndoPolygon}
+          handleCancelArea={handleCancelArea}
         />
       </div>
     </Suspense>
