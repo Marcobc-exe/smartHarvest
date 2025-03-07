@@ -14,7 +14,7 @@
   font-weight: 600;
 }
 
-.inputNameArea, .inputTagName, .inputCropName {
+.inputNameArea, .inputTagName, .selectCropArea {
   border: none;
   margin-bottom: 12px;
   padding: 10px 0 10px 10px;
@@ -24,7 +24,7 @@
   opacity: .6;
 }
 
-.inputNameArea:focus, .inputTagName:focus, .inputCropName:focus {
+.inputNameArea:focus, .inputTagName:focus {
   opacity: 1;
   outline: none;
 }
@@ -63,7 +63,8 @@
 }
 
 .hrBtnUndo {
-  margin: 12px 20px;
+  width: 100%;
+  margin: 12px 0;
 }
 
 .submitArea, .cancelArea {
@@ -100,4 +101,25 @@
   justify-content: space-between;
   margin-bottom: 18px;
   align-items: center;
+}
+
+.selectCropArea {
+  outline: none;
+  cursor: pointer;
+  padding-bottom: 18px;
+}
+
+.selectCropArea:active {
+  opacity: 1;
+  transition: 0.1s all ease-in-out;
+}
+
+.optionCrop, .choose {
+  background-color: rgba(0, 0, 0, .5);
+  color: white;
+  cursor: pointer;
+}
+
+.optionCrop:hover, .choose:hover {
+  background-color: rgba(0, 0, 0, .3);
 }

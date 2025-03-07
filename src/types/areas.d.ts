@@ -1,7 +1,10 @@
 export type InputArea = {
   name: string;
   tagName: string;
-  cropName: string;
+  crop: {
+    id: number;
+    name: string;
+  };
 }
 
 type Properties = {
@@ -10,6 +13,7 @@ type Properties = {
   name: string;
   tagName: string;
   cropId: number;
+  cropName: string;
   status: number;
 }
 

@@ -7,6 +7,7 @@ import { MapType } from "../../../types/map";
 import { PanelBtn } from "../../ListAreas/PanelBtns/PanelBtn";
 import { Input } from "../../Inputs/InputController";
 import { requiredRule } from "../../../utils/const";
+import { Select } from "../../Selects/Select";
 
 type props = {
   addArea: boolean;
@@ -27,21 +28,22 @@ export const FormArea: FC<props> = ({
   handleUndoPolygon,
   handleCancelArea,
 }) => {
-  const { control, handleSubmit, resetField } = useForm<InputArea>({
-    defaultValues: { name: "", tagName: "", cropName: "" },
+  const { control, handleSubmit, resetField, getValues } = useForm<InputArea>({
+    defaultValues: { name: "", tagName: "", crop: { id: 0, name: "" } },
   });
   const [errorArea, setErrorArea]: useStateProp<boolean> = useState(false);
 
   const handleResetFields = () => {
     resetField("name");
-    resetField("cropName");
+    resetField("crop");
     resetField("tagName");
   };
 
   const handleSaveArea = (values: InputArea) => {
-    if (area.length) {
-      // const cropName = values.cropName;
-      const cropName = 1;
+    const strCrop = getValues("crop");
+    const cropChoosed = JSON.parse(strCrop);
+    
+    if (area.length && cropChoosed.id != 0) {
       const listAreas: Area[] = JSON.parse(
         localStorage.getItem("areas") ?? "[]"
       );
@@ -55,7 +57,8 @@ export const FormArea: FC<props> = ({
               farmId: parseInt(currentMap.id),
               name: values.name, // required
               tagName: values.tagName ?? "", // optional
-              cropId: cropName, // required
+              cropId: cropChoosed.id, // required
+              cropName: cropChoosed.name, // required
               status: 0, // optional
             },
             geometry: {
@@ -65,6 +68,7 @@ export const FormArea: FC<props> = ({
           },
         ],
       };
+      
       const newListAreas = JSON.stringify([...listAreas, newArea]);
       localStorage.setItem("areas", newListAreas);
       setErrorArea(false);
@@ -114,14 +118,12 @@ export const FormArea: FC<props> = ({
             classNameInput="inputTagName"
             classNameIcon="iconPencil"
           />
-          <Input
+          <Select
             control={control}
-            name="cropName"
-            placeholder="Crop name"
+            name="crop"
             rules={requiredRule}
-            classNameBox="boxInputCropName"
-            classNameInput="inputCropName"
-            classNameIcon="iconPencil"
+            classSelect="selectCropArea"
+            classOption="optionCrop"
           />
           {errorArea && area.length < 3 && <span>Coordinates required</span>}
           <div className="containerBtnsFormArea">

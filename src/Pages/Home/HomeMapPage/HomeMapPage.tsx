@@ -44,7 +44,6 @@ export const HomeMapPage = () => {
   const [area, setArea]: useStateProp<number[][]> = useState([]);
   const [isDrawing, setIsDrawing]: useStateProp<boolean> = useState(false);
   const [addArea, setAddArea]: useStateProp<boolean> = useState(false);
-  // const [currentArea, setCurrentArea]: useStateProp<Area[] | []> = useState([]);
 
   const areas: Area[] | [] = JSON.parse(localStorage.getItem("areas") ?? "[]");
   const listAreas = listOfMaps.length
