@@ -4,7 +4,7 @@ import { Map } from "react-map-gl/mapbox";
 import "mapbox-gl/dist/mapbox-gl.css";
 import DeckGl from "deck.gl";
 import { useForm } from "react-hook-form";
-import { Coords, dataNewMap, InputMap, MapType } from "../../../types/map";
+import { dataNewMap, InputMap, MapType } from "../../../types/map";
 import { useStateProp } from "../../../types/read";
 import {
   defaultMap,
@@ -74,7 +74,7 @@ export const HomeMapPage = () => {
     }));
   };
 
-  const handleDrawPolygon = (data: { coords: Coords }) => {
+  const handleDrawPolygon = (data: { coords: number[], zoom: number }) => {
     const [longitude, latitude] = data.coords;
 
     if (!isDrawing) {
@@ -82,6 +82,11 @@ export const HomeMapPage = () => {
       setIsDrawing(true);
     } else {
       setArea((prev: number[][]) => [...prev, [longitude, latitude]]);
+      setCurrentMap((preValues: MapType) => ({
+        ...preValues,
+        center: `${latitude}; ${longitude}`,
+        zoom: data.zoom,
+      }));
     }
   };
 
@@ -201,6 +206,28 @@ export const HomeMapPage = () => {
 
   const onClickArea = () => {};
 
+  const onClickMap = (
+    coordinate: number[] | undefined,
+    zoom: number | undefined
+  ) => {
+    const isDisplay = displayForm || displayEditForm;
+    const centerPoint = isDisplay && !addArea;
+    const isCoords = coordinate !== undefined;
+
+    if (centerPoint && isCoords) {
+      const coords = coordinate ?? [0, 0];
+      handleCenterPoint({
+        coords,
+        zoom: zoom ?? 1,
+      });
+    } else if (addArea) {
+      handleDrawPolygon({
+        coords: coordinate ?? [0, 0],
+        zoom: zoom!,
+      });
+    }
+  };
+
   return (
     <Suspense fallback={<LoaderMap />}>
       <h2>Smart Harvest</h2>
@@ -218,18 +245,7 @@ export const HomeMapPage = () => {
           initialViewState={initialView(currentMap)}
           controller={true}
           style={STYLE_MAP}
-          onClick={(data) => {
-            if ((displayForm || displayEditForm) && !addArea) {
-              handleCenterPoint({
-                coords: (data.coordinate as Coords) ?? [0, 0],
-                zoom: data.viewport?.zoom ?? 1,
-              });
-            } else if (addArea) {
-              handleDrawPolygon({
-                coords: (data.coordinate as Coords) ?? [0, 0],
-              });
-            }
-          }}
+          onClick={(data) => onClickMap(data.coordinate, data.viewport?.zoom)}
           getCursor={(event) => handleCursor(event)}
           layers={[handlePolygonLayer(listAreas, area)]}
         >
