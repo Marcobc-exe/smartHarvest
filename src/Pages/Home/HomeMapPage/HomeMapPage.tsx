@@ -24,6 +24,7 @@ import { FormArea } from "../../../components/Forms/FormArea/FormArea";
 import { Area } from "../../../types/areas";
 import { handlePolygonLayer } from "../../../utils/polygonLayer";
 import { AreaPoints } from "../../../components/Markers/AreaPoints/AreaPoints";
+import { Tooltip } from "../../../utils/components/Tooltip/Tooltip";
 
 export const HomeMapPage = () => {
   const navigate = useNavigate();
@@ -74,7 +75,7 @@ export const HomeMapPage = () => {
     }));
   };
 
-  const handleDrawPolygon = (data: { coords: number[], zoom: number }) => {
+  const handleDrawPolygon = (data: { coords: number[]; zoom: number }) => {
     const [longitude, latitude] = data.coords;
 
     if (!isDrawing) {
@@ -248,6 +249,7 @@ export const HomeMapPage = () => {
           onClick={(data) => onClickMap(data.coordinate, data.viewport?.zoom)}
           getCursor={(event) => handleCursor(event)}
           layers={[handlePolygonLayer(listAreas, area)]}
+          getTooltip={({ object }) => Tooltip(object)}
         >
           <Map
             mapStyle={MAP_STYLE}

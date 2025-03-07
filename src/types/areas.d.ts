@@ -5,7 +5,7 @@ export type InputArea = {
     id: number;
     name: string;
   };
-}
+};
 
 type Properties = {
   id: number;
@@ -15,20 +15,20 @@ type Properties = {
   cropId: number;
   cropName: string;
   status: number;
-}
+};
 
 type Geometry = {
-  type: "Polygon",
-  coordinates: [number[][]]
-}
+  type: "Polygon";
+  coordinates: [number[][]];
+};
 
 type Features = {
   type: string;
-  properties: Properties,
-  geometry: Geometry
-}
+  properties: Properties;
+  geometry: Geometry;
+};
 
 export type Area = {
   type: string;
   features: [Features];
-}
+};
