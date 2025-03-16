@@ -30,20 +30,25 @@ export const Select = <T extends FieldValues>({
       control={control}
       name={name}
       rules={rules}
-      render={({ field: { value, ref, onChange }, formState: { errors } }) => {
+      render={({
+        field: { value, ref, onChange, onBlur, name },
+        formState: { errors }
+      }) => {
+        const strValue = !value ? JSON.stringify(value) : value;
         return (
           <select
             className={classSelect}
             ref={ref}
-            name="crop"
+            name={name}
             style={{
               borderBottom:
                 errors.name?.type === "required"
                   ? "1px solid red"
                   : "1px solid rgba(255, 255, 255, .3)",
             }}
-            value={value}
+            value={strValue}
             onChange={onChange}
+            onBlur={onBlur}
           >
             <option className="choose" value="">
               Choose a crop

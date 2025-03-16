@@ -17,7 +17,7 @@ type props<T extends FieldValues> = {
   handleSubmit: UseFormHandleSubmit<T>;
   handleCancelEditMap: () => void;
   handleDeleteMap: () => void;
-  handleAddArea: () => void;
+  handleAddArea: (area?: Area) => void;
   onClickArea: () => void;
 };
 

@@ -1,7 +1,7 @@
 import "./index.css";
 import { useForm } from "react-hook-form";
 import { Area, InputArea } from "../../../types/areas";
-import { FC, useState } from "react";
+import { FC, useCallback, useEffect, useState } from "react";
 import { useStateProp } from "../../../types/read";
 import { MapType } from "../../../types/map";
 import { PanelBtn } from "../../ListAreas/PanelBtns/PanelBtn";
@@ -10,6 +10,7 @@ import { requiredRule } from "../../../utils/const";
 import { Select } from "../../Selects/Select";
 
 type props = {
+  currentArea: Area | null;
   addArea: boolean;
   area: number[][];
   currentMap: MapType;
@@ -20,6 +21,7 @@ type props = {
 };
 
 export const FormArea: FC<props> = ({
+  currentArea,
   addArea,
   area,
   currentMap,
@@ -28,9 +30,11 @@ export const FormArea: FC<props> = ({
   handleUndoPolygon,
   handleCancelArea,
 }) => {
-  const { control, handleSubmit, resetField, getValues } = useForm<InputArea>({
-    defaultValues: { name: "", tagName: "", crop: { id: 0, name: "" } },
-  });
+  const title = currentArea ? "Edit Area" : "New Area";
+  const { control, handleSubmit, resetField, getValues, setValue } =
+    useForm<InputArea>({
+      defaultValues: { name: "", tagName: "", crop: { id: 0, name: "" } },
+    });
   const [errorArea, setErrorArea]: useStateProp<boolean> = useState(false);
 
   const handleResetFields = () => {
@@ -40,13 +44,46 @@ export const FormArea: FC<props> = ({
   };
 
   const handleSaveArea = (values: InputArea) => {
-    const strCrop = getValues("crop");
-    const cropChoosed = JSON.parse(strCrop);
-    
-    if (area.length && cropChoosed.id != 0) {
-      const listAreas: Area[] = JSON.parse(
-        localStorage.getItem("areas") ?? "[]"
-      );
+    const cropChoosed = getValues("crop");
+    const listAreas: Area[] = JSON.parse(localStorage.getItem("areas") ?? "[]");
+
+    if (currentArea) {
+      const newList = listAreas.map(oldArea => {
+        const areaId = oldArea.features[0].properties.id;
+        const currentAreaId = currentArea.features[0].properties.id;
+        const oldProps = oldArea.features[0].properties
+
+        if (areaId === currentAreaId) {
+          return {
+            ...currentArea,
+            features: [
+              {
+                properties: {
+                  id: oldProps.id,
+                  name: getValues("name").trim(),
+                  tagName: getValues("tagName").trim(),
+                  cropId: getValues("crop.id"),
+                  cropName: getValues("crop.name"),
+                  farmId: oldProps.farmId,
+                  status: oldProps.status
+                },
+                geometry: {
+                  coordinates: [area],
+                  type: "Polygon"
+                },
+              },
+            ],
+          };
+        } else {
+          return oldArea;
+        }
+      });
+      localStorage.setItem("areas", JSON.stringify(newList));
+      setErrorArea(false);
+      handleSetAddArea(false);
+      handleSetArea();
+      handleResetFields();
+    } else if (area.length && cropChoosed.id != 0) {
       const newArea: Area = {
         type: "FeatureCollection",
         features: [
@@ -55,8 +92,8 @@ export const FormArea: FC<props> = ({
             properties: {
               id: listAreas.length + 1,
               farmId: parseInt(currentMap.id),
-              name: values.name, // required
-              tagName: values.tagName ?? "", // optional
+              name: values.name.trim(), // required
+              tagName: values.tagName.trim() ?? "", // optional
               cropId: cropChoosed.id, // required
               cropName: cropChoosed.name, // required
               status: 0, // optional
@@ -68,7 +105,7 @@ export const FormArea: FC<props> = ({
           },
         ],
       };
-      
+
       const newListAreas = JSON.stringify([...listAreas, newArea]);
       localStorage.setItem("areas", newListAreas);
       setErrorArea(false);
@@ -85,6 +122,19 @@ export const FormArea: FC<props> = ({
     handleResetFields();
   };
 
+  const handleCurrentArea = useCallback(() => {
+    if (currentArea !== null) {
+      const properties = currentArea.features[0].properties;
+      setValue("name", properties.name);
+      setValue("tagName", properties.tagName);
+      setValue("crop", { id: properties.cropId, name: properties.cropName });
+    }
+  }, [currentArea, setValue]);
+
+  useEffect(() => {
+    handleCurrentArea();
+  }, [handleCurrentArea]);
+
   return (
     <>
       {addArea && (
@@ -99,7 +149,7 @@ export const FormArea: FC<props> = ({
             handleDelPolygon={handleSetArea}
           />
           <hr className="hrBtnUndo" />
-          <span className="tlNewArea">New Area</span>
+          <span className="tlNewArea">{title}</span>
           <Input
             control={control}
             name="name"

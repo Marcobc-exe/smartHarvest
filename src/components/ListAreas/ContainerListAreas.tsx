@@ -6,7 +6,7 @@ import { Area } from "../../types/areas";
 
 type props = {
   listAreas: Area[];
-  handleAddArea: () => void;
+  handleAddArea: (area?: Area) => void;
   onClickArea: () => void;
 };
 
@@ -18,7 +18,11 @@ export const ContainerListAreas: FC<props> = ({
   return (
     <div className="containerBtnAreas">
       <BtnAddArea handleAddArea={handleAddArea} />
-      <ListAreas listAreas={listAreas} onClickArea={onClickArea} />
+      <ListAreas
+        listAreas={listAreas}
+        handleAddArea={handleAddArea}
+        onClickArea={onClickArea}
+      />
     </div>
   );
 };

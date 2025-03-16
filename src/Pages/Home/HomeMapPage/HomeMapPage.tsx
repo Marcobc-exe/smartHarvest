@@ -45,6 +45,7 @@ export const HomeMapPage = () => {
   const [area, setArea]: useStateProp<number[][]> = useState([]);
   const [isDrawing, setIsDrawing]: useStateProp<boolean> = useState(false);
   const [addArea, setAddArea]: useStateProp<boolean> = useState(false);
+  const [currentArea, setCurrentArea]: useStateProp<Area | null> = useState(null);
 
   const areas: Area[] | [] = JSON.parse(localStorage.getItem("areas") ?? "[]");
   const listAreas = listOfMaps.length
@@ -178,6 +179,7 @@ export const HomeMapPage = () => {
   const handleCancelArea = () => {
     setAddArea(false);
     setArea([]);
+    if (currentArea) setCurrentArea(null);
   };
 
   const handleDeleteMap = () => {
@@ -193,8 +195,14 @@ export const HomeMapPage = () => {
     }
   };
 
-  const handleAddArea = () => {
+  const handleAddArea = (area?: Area) => {
     setAddArea(true);
+
+    if (area) {
+      const coordinates = area.features[0].geometry.coordinates[0];
+      setCurrentArea(area);
+      setArea(coordinates);
+    }
   };
 
   const handleSetAddArea = (value: boolean) => {
@@ -285,6 +293,7 @@ export const HomeMapPage = () => {
           onClickArea={onClickArea}
         />
         <FormArea
+          currentArea={currentArea}
           addArea={addArea}
           area={area}
           currentMap={currentMap}

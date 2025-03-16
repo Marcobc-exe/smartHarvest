@@ -7,15 +7,24 @@ import "./index.css";
 type props = {
   listAreas: Area[];
   onClickArea: () => void;
+  handleAddArea: (area?: Area) => void;
 };
 
-export const ListAreas: FC<props> = ({ listAreas, onClickArea }) => {
+export const ListAreas: FC<props> = ({
+  listAreas,
+  onClickArea,
+  handleAddArea,
+}) => {
   return (
     <div className="btnContainerAreas">
       {listAreas.map((area: Area, index) => (
         <div key={index} className={"btnBoxArea"}>
           <BtnArea area={area} onClickArea={onClickArea} />
-          <BtnEditArea currentArea="a" />
+          <BtnEditArea
+            area={area}
+            currentArea="a"
+            handleAddArea={handleAddArea}
+          />
         </div>
       ))}
     </div>
