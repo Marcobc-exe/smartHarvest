@@ -25,6 +25,7 @@ import { Area } from "../../../types/areas";
 import { handlePolygonLayer } from "../../../utils/polygonLayer";
 import { AreaPoints } from "../../../components/Markers/AreaPoints/AreaPoints";
 import { Tooltip } from "../../../utils/components/Tooltip/Tooltip";
+import { DialogConfirm } from "../../../components/DialogConfirm/DialogConfirm";
 
 export const HomeMapPage = () => {
   const navigate = useNavigate();
@@ -46,6 +47,7 @@ export const HomeMapPage = () => {
   const [isDrawing, setIsDrawing]: useStateProp<boolean> = useState(false);
   const [addArea, setAddArea]: useStateProp<boolean> = useState(false);
   const [currentArea, setCurrentArea]: useStateProp<Area | null> = useState(null);
+  const [openDialog, setOpenDialog]: useStateProp<boolean> = useState(false);
 
   const areas: Area[] | [] = JSON.parse(localStorage.getItem("areas") ?? "[]");
   const listAreas = listOfMaps.length
@@ -187,6 +189,7 @@ export const HomeMapPage = () => {
     const updatedMaps = maps.filter((map) => map.id !== currentMap.id);
 
     localStorage.setItem("maps", JSON.stringify(updatedMaps));
+    setOpenDialog(false);
 
     if (updatedMaps.length > 0) {
       setCurrentMap(updatedMaps[0]);
@@ -237,8 +240,23 @@ export const HomeMapPage = () => {
     }
   };
 
+  const handleOpenDialog = () => {
+    setOpenDialog(true);
+  };
+
+  const handleCloseDialog = () => {
+    setOpenDialog(false);
+  };
+
   return (
     <Suspense fallback={<LoaderMap />}>
+      <DialogConfirm
+        title="Are you sure you want to remove this map?"
+        desc="Removing the current map will remove all the related information."
+        open={openDialog}
+        handleOnClose={handleCloseDialog}
+        handleAction={handleDeleteMap}
+      />
       <h2>Smart Harvest</h2>
       <div className="container">
         <ContainerListMaps
@@ -288,7 +306,7 @@ export const HomeMapPage = () => {
           handleSaveMap={handleSaveMap}
           handleSubmit={handleSubmit}
           handleCancelEditMap={handleCancelEditMap}
-          handleDeleteMap={handleDeleteMap}
+          handleDeleteMap={handleOpenDialog}
           handleAddArea={handleAddArea}
           onClickArea={onClickArea}
         />
