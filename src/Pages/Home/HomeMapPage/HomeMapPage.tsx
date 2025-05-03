@@ -184,12 +184,30 @@ export const HomeMapPage = () => {
     if (currentArea) setCurrentArea(null);
   };
 
+  const handleDeleteMapAreas = () => {
+    const areasStoraged: Area[] = JSON.parse(localStorage.getItem("areas") ?? "[]");
+
+    if (areasStoraged.length == 0) return;
+
+    const mapAreas = areasStoraged.filter((area: Area) => 
+      area.features[0].properties.farmId.toString() == currentMap.id
+    );
+
+    if (mapAreas.length == 0) return;
+
+    const newAreasList = areasStoraged.filter((area: Area) => 
+      area.features[0].properties.farmId.toString() != currentMap.id
+    );
+    localStorage.setItem('areas', JSON.stringify(newAreasList));
+  };
+
   const handleDeleteMap = () => {
     const maps: MapType[] = JSON.parse(localStorage.getItem("maps") ?? "[]");
     const updatedMaps = maps.filter((map) => map.id !== currentMap.id);
 
     localStorage.setItem("maps", JSON.stringify(updatedMaps));
     setOpenDialog(false);
+    handleDeleteMapAreas();
 
     if (updatedMaps.length > 0) {
       setCurrentMap(updatedMaps[0]);
