@@ -1,71 +1,83 @@
+import { X } from "@phosphor-icons/react";
 import "./index.css";
 import { FC } from "react";
-import {
-  Control,
-  Controller,
-  FieldValues,
-  UseFormHandleSubmit,
-} from "react-hook-form";
+import { Control, FieldValues, UseFormHandleSubmit } from "react-hook-form";
+import { ContainerListAreas } from "../../ListAreas/ContainerListAreas";
+import { Area } from "../../../types/areas";
+import { Input } from "../../Inputs/InputController";
+import { requiredRule } from "../../../utils/const";
 
 type props<T extends FieldValues> = {
+  addArea: boolean;
   displayEditForm: boolean;
   control: Control<T>;
   errorCoords: boolean;
+  listAreas: Area[];
   handleSaveMap: (value: T) => void;
   handleSubmit: UseFormHandleSubmit<T>;
   handleCancelEditMap: () => void;
   handleDeleteMap: () => void;
+  handleAddArea: (area?: Area) => void;
+  onClickArea: () => void;
 };
 
 export const FormEditMap: FC<props<{ name: string }>> = ({
+  addArea,
   displayEditForm,
   control,
   errorCoords,
+  listAreas,
   handleSaveMap,
   handleSubmit,
   handleCancelEditMap,
   handleDeleteMap,
+  handleAddArea,
+  onClickArea,
 }) => {
   return (
     <>
-      {displayEditForm && (
-        <form className="formMap" onSubmit={handleSubmit(handleSaveMap)}>
-          <Controller
-            name="name"
+      {displayEditForm && !addArea && (
+        <form className="formMapEdit" onSubmit={handleSubmit(handleSaveMap)}>
+          <div style={{ position: "relative", marginBottom: "34px" }}>
+            <button
+              className="btnClosePanel"
+              onClick={() => handleCancelEditMap()}
+            >
+              <X weight="bold" color="white" />
+            </button>
+          </div>
+          <Input
             control={control}
-            rules={{
-              required: true,
-            }}
-            render={({
-              field: { value, onChange, onBlur, ref },
-              formState: { errors },
-            }) => (
-              <input
-                className="inputName"
-                type="text"
-                placeholder="Name"
-                onChange={onChange}
-                onBlur={onBlur}
-                ref={ref}
-                value={value}
-                style={{
-                  border: errors.name ? "1px solid red" : "none",
-                }}
-              />
-            )}
+            name="name"
+            placeholder="Name"
+            rules={requiredRule}
+            classNameBox="boxInputName"
+            classNameInput="inputName"
+            classNameIcon="inputIconPencil"
           />
-          <button type="submit" className="btnCreateMap">
-            Save
-          </button>
-          <button className="btnCancelMap" onClick={() => handleCancelEditMap()}>
-            Cancel
-          </button>
-          <button className="btnDeleteMap" onClick={() => handleDeleteMap()}>
-            Delete
-          </button>
           {errorCoords && (
             <span style={{ color: "white" }}>Coordinates required</span>
           )}
+          <ContainerListAreas
+            listAreas={listAreas}
+            onClickArea={onClickArea}
+            handleAddArea={handleAddArea}
+          />
+          <div className="boxButtons">
+            <button type="submit" className="btnCreateMap">
+              Save
+            </button>
+            <button
+              className="btnCancelMap"
+              onClick={() => handleCancelEditMap()}
+            >
+              Cancel
+            </button>
+            <hr className="hrDelete" />
+            <button className="btnDeleteMap" onClick={() => handleDeleteMap()}>
+              Delete
+            </button>
+          </div>
         </form>
       )}
     </>

@@ -7,10 +7,8 @@ export type MapType = {
   maxZoom: number;
 }
 
-export type Coords = [number, number];
-
 export type dataNewMap = {
-  coords: Coords;
+  coords: number[];
   zoom: number;
 }
 

@@ -1,4 +1,13 @@
 .container {
-  /* background-color: green; */
+  width: 100%;
+  height: calc(100vh - 120px);
+}
+
+.pointNewArea {
+  background-color: red;
+  height: 10px;
+  width: 10px;
+  border-radius: 18px;
   position: relative;
+  top: 5px;
 }

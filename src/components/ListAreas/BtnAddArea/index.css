@@ -1,0 +1,33 @@
+.btnAddDisabled, .btnAddEnabled {
+  background-color: #34495e;
+  border-radius: 8px;
+  border: 1px solid white;
+  min-height: 40px;
+  width: 190px;
+  cursor: pointer;
+  color: white;
+  font-size: 16px;
+  margin-bottom: 16px;
+  display: flex;
+  justify-self: center;
+  justify-content: center;
+  align-items: center;
+}
+
+.btnAddEnabled:hover {
+  background-color: #2c3e50;
+  transition: .04s all ease-in-out;
+}
+
+.btnAddDisabled {
+  opacity: .3;
+  cursor: default;
+}
+
+.hrAddArea {
+  height: 1px;
+  border: none;
+  border-bottom: 1px solid white;
+  opacity: .3;
+  width: 85%;
+}

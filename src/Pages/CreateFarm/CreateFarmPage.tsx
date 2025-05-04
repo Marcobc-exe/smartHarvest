@@ -4,7 +4,7 @@ import { lazy, Suspense, useState } from "react";
 import { Map, NavigationControl } from "react-map-gl/mapbox";
 import { LoaderMap } from "../../components/LoaderMap/LoaderMap";
 import { initialView } from "../../utils/initialViewfunction";
-import { defaultMap, MAP_STYLE, MAPBOX_TOKEN, STYLE_NEW_MAP } from "../../config/configMap";
+import { defaultMap, MAP_STYLE, MAPBOX_TOKEN, STYLE_MAP } from "../../config/configMap";
 import { dataNewMap, InputMap, MapType } from "../../types/map";
 import { useStateProp } from "../../types/read";
 import { FormNewMap } from "../../components/Forms/FormNewMap/FormNewMap";
@@ -65,7 +65,7 @@ export const CreateFarmPage = () => {
         <DeckGl
           initialViewState={initialView(defaultMap)}
           controller={true}
-          style={STYLE_NEW_MAP}
+          style={STYLE_MAP}
           onClick={(data) => {
             handleCenterPoint({
               coords: (data.coordinate as [number, number] ?? [0, 0]),

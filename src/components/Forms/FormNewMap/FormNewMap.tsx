@@ -1,3 +1,4 @@
+import { PencilSimple } from "@phosphor-icons/react";
 import "./index.css";
 import { FC } from "react";
 import {
@@ -6,6 +7,8 @@ import {
   FieldValues,
   UseFormHandleSubmit,
 } from "react-hook-form";
+import { Input } from "../../Inputs/InputController";
+import { requiredRule } from "../../../utils/const";
 
 type props<T extends FieldValues> = {
   displayForm: boolean;
@@ -28,42 +31,29 @@ export const FormNewMap: FC<props<{ name: string }>> = ({
     <>
       {displayForm && (
         <form className="formMap" onSubmit={handleSubmit(handleCreateMap)}>
-          <Controller
-            name="name"
+          <Input
             control={control}
-            rules={{
-              required: true,
-            }}
-            render={({
-              field: { value, onChange, onBlur, ref },
-              formState: { errors },
-            }) => (
-              <input
-                className="inputName"
-                type="text"
-                placeholder="Name"
-                onChange={onChange}
-                onBlur={onBlur}
-                ref={ref}
-                value={value}
-                style={{
-                  border: errors.name ? "1px solid red" : "none",
-                }}
-              />
-            )}
+            name="name"
+            placeholder="Name"
+            rules={requiredRule}
+            classNameBox="boxInputName"
+            classNameInput="inputName"
+            classNameIcon="inputIconPencil"
           />
-          <button type="submit" className="btnCreateMap">
-            Create
-          </button>
-          <button
-            className="btnCancellMap"
-            onClick={() => handleCancelCreateMap()}
-          >
-            Cancel
-          </button>
           {errorCoords && (
             <span style={{ color: "white" }}>Coordinates required</span>
           )}
+          <div className="boxButtonsNewMap">
+            <button type="submit" className="btnCreateNewMap">
+              Create
+            </button>
+            <button
+              className="btnCancellNewMap"
+              onClick={() => handleCancelCreateMap()}
+            >
+              Cancel
+            </button>
+          </div>
         </form>
       )}
     </>
