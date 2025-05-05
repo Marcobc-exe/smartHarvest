@@ -1,12 +1,6 @@
-import { PencilSimple } from "@phosphor-icons/react";
 import "./index.css";
 import { FC } from "react";
-import {
-  Control,
-  Controller,
-  FieldValues,
-  UseFormHandleSubmit,
-} from "react-hook-form";
+import { Control, FieldValues, UseFormHandleSubmit } from "react-hook-form";
 import { Input } from "../../Inputs/InputController";
 import { requiredRule } from "../../../utils/const";
 

@@ -4,7 +4,7 @@ import { FC } from "react";
 
 type props = {
   coords: number[] | [];
-  addArea: boolean;
+  addArea?: boolean;
 };
 
 export const MarkerCreateMap: FC<props> = ({ coords, addArea }) => {
